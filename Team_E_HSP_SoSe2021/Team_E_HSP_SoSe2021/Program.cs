@@ -14,13 +14,13 @@ namespace Hello_World_Team_E_HSP
         static void Main(string[] args) // Hier beginnt das Hauptprogramm 
         {
             // Ausgabe Benutzer 1
-            Console.WriteLine("Hello World von Jan");
+            Console.WriteLine("Hello World von Jan1");
 
             // Ausgabe Benutzer 2
             Console.WriteLine("Hello World von Marvin");
 
             // Ausgabe Benutzer 3
-            Console.WriteLine("Hello World von Jan");
+            Console.WriteLine("Hello World von Jan2");
 
             // Ausgabe Benutzer 4
             Console.WriteLine("Hello World von Richard");
