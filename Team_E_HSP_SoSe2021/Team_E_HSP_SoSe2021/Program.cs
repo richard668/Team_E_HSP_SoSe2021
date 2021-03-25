@@ -2,7 +2,7 @@
 
 /*
  Hello World Programm
- Version 1.1.1
+ Version 1.1
  letzte Aenderung 17.09.2019
  Kai Mecke
 */
