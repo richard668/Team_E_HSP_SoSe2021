@@ -3,11 +3,11 @@
 /*
  Hello World Programm
  Version 1.1
- letzte Aenderung 17.09.2019
- Kai Mecke
+ letzte Aenderung 25.03.2021
+ Team_E_HSP
 */
 
-namespace Hello_World_Mecke
+namespace Hello_World_Team_E_HSP
 {
     class Program
     {
