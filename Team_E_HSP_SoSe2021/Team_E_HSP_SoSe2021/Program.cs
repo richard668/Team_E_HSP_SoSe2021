@@ -26,7 +26,7 @@ namespace Hello_World_Team_E_HSP
             Console.WriteLine("Hello World von Richard");
 
             // Zeile die Konflikt triggern soll
-            Console.WriteLine("Hello");
+            Console.WriteLine("Moin Team E");
 
             // warte bis der User eine Taste drueckt
             Console.ReadKey();
