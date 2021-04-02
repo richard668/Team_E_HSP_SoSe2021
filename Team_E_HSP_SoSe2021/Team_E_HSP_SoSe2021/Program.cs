@@ -26,6 +26,7 @@ namespace ConsoleTest
             {
                 double laengenausgabe = Laenge(0);
                 Console.Clear();
+                double durchmesserausgabe = Durchmesser(0);
                 Console.Clear();
                 string schraubenkopfausgabe = Schraubenkopf(0);
                 Console.Clear();
