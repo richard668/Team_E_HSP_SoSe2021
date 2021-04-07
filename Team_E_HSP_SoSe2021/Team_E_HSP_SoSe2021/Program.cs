@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ConsoleTest
 {
+
     class Program
     {
 
@@ -14,7 +15,7 @@ namespace ConsoleTest
 
             Console.WriteLine("\n\n\n Folgendes wird in diesem Programm ausgewertet..");
             Console.WriteLine("\n\n Länge:");
-            Console.WriteLine(" Durchmessrer:");
+            Console.WriteLine(" Durchmesser:");
             Console.WriteLine(" Schraubenkopf:");
             Console.WriteLine(" Material:");
             Console.WriteLine(" Gewinde:");
