@@ -38,7 +38,7 @@ namespace ConsoleTest
 
                 Console.WriteLine("\n\n\n Folgende Eingabeparameter werden übermittelt..");
                 Console.WriteLine("\n\n Länge: " + laengenausgabe + " mm");
-                Console.WriteLine(" Durchmessrer: " + durchmesserausgabe + " mm");
+                Console.WriteLine(" Durchmesser: " + durchmesserausgabe + " mm");
                 Console.WriteLine(" Schraubenkopf: " + schraubenkopfausgabe);
                 Console.WriteLine(" Material: " + materialausgabe);
                 Console.WriteLine(" Gewinde: " + gewindeausgabe);
@@ -46,6 +46,15 @@ namespace ConsoleTest
                 Console.WriteLine("\n\n Berechnete Größen: ");
 
                 //Hier kommen die Methoden für die Berechnungen hin..
+
+                Tabellen();
+
+                Berechnungen();
+
+                Console.WriteLine("Anhand der eingegebenen Parameter konnten folgende zusätzliche Daten ermittelt werden");
+
+                //Ausgabe der errechneten Daten
+                
 
                 Console.ReadKey();
 
@@ -55,6 +64,13 @@ namespace ConsoleTest
             while (auswahl == "j");
 
         }
+        //Hauptprogramm Ende
+
+
+
+
+
+
 
         static public double Laenge(int a)
         {
@@ -191,6 +207,105 @@ namespace ConsoleTest
             Console.ReadKey();
 
             return gewindeart;
+        }
+
+    static public void Berechnungen (double durchmesserausgabe)
+        {
+
+            //Duchgangbohrung Durchmesser
+            double Durchgangsbohrung = 0; // Wert der am Ende ausgegeben werden soll
+            int jj = 0; // Variable die zum hochzählen verwendet werden soll
+            int M = 0; // String der in der Tabelle steht in einen int umwandeln
+            for (jj=0; jj<8; jj++ ) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+            {
+                M = Convert.ToInt32 Tabelle[jj, 0]; //umwandeln der Strings in der Tabelle in int
+                if(durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                {
+                    Durchgangsbohrung = Tabellen[jj, 1]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
+
+                }
+                else
+                {
+
+                }
+                
+            }
+              // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
+           
+
+
+
+            double maxBelastung = 0;
+            double Preis = 0;
+            string Norm = "norm";
+            double Masse = 0;
+            double Mindesteinschraubtiefe = 0;
+            double Senktiefe = 0;
+            double Senkdurchmesser = 0;
+
+        }
+        
+    static public void Tabellen ()
+        {
+            // die Werte können nicht mit Formeln errechnet werden, sondern sind auf diese Tabellenwerte genormt
+            // deswegen wollten wir die als Tabelle hinterlegen um sie bei den Berechnungen bzw. Ausgaben zu verwenden
+
+            string[,] Tabelle = new string[9, 5];
+
+            //Gewinde Nenndurchmesser
+            Tabelle[0, 0] = "3";
+            Tabelle[1, 0] = "4";
+            Tabelle[2, 0] = "5";
+            Tabelle[3, 0] = "6";
+            Tabelle[4, 0] = "8";
+            Tabelle[5, 0] = "10";
+            Tabelle[6, 0] = "12";
+            Tabelle[7, 0] = "16";
+            Tabelle[8, 0] = "20";
+
+            //Durchgangsloch Durchmesser
+            Tabelle[0, 1] = "3,4";
+            Tabelle[1, 1] = "4,5";
+            Tabelle[2, 1] = "5,5";
+            Tabelle[3, 1] = "6,6";
+            Tabelle[4, 1] = "9";
+            Tabelle[5, 1] = "11";
+            Tabelle[6, 1] = "13,5";
+            Tabelle[7, 1] = "17,5";
+            Tabelle[8, 1] = "22";
+
+            //ISO 4762 Senkdurchmesser Zylinderkopfschraube
+            Tabelle[0, 2] = "6,5";
+            Tabelle[1, 2] = "8";
+            Tabelle[2, 2] = "10";
+            Tabelle[3, 2] = "11";
+            Tabelle[4, 2] = "15";
+            Tabelle[5, 2] = "18";
+            Tabelle[6, 2] = "20";
+            Tabelle[7, 2] = "26";
+            Tabelle[8, 2] = "33";
+
+            //ISO 4762 Senktiefe Zylinderkopfschraube
+            Tabelle[0, 3] = "3,4";
+            Tabelle[1, 3] = "4,4";
+            Tabelle[2, 3] = "5,4";
+            Tabelle[3, 3] = "6,4";
+            Tabelle[4, 3] = "8,6";
+            Tabelle[5, 3] = "10,6";
+            Tabelle[6, 3] = "12,6";
+            Tabelle[7, 3] = "16,6";
+            Tabelle[8, 3] = "20,6";
+
+            // Durchmesser Kegelsenkung
+            Tabelle[0, 4] = "6,9";
+            Tabelle[1, 4] = "9,2";
+            Tabelle[2, 4] = "11,5";
+            Tabelle[3, 4] = "13,7";
+            Tabelle[4, 4] = "18,3";
+            Tabelle[5, 4] = "22,7";
+            Tabelle[6, 4] = "27,2";
+            Tabelle[7, 4] = "34";
+            Tabelle[8, 4] = "40,7";
         }
 
     }
