@@ -191,6 +191,8 @@ namespace ConsoleTest
                     break;
                 case 4:
                     materialart = "Nichtrostender Stahl A4-50";
+                    materialzugfestigkeit = 500;
+                    materialstreckgrenze = 210;
                     break;
                 default:
                     materialart = "-/-";
