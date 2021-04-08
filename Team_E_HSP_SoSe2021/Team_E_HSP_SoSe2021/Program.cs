@@ -31,7 +31,8 @@ namespace ConsoleTest
                 Console.Clear();
                 string schraubenkopfausgabe = Schraubenkopf(0);
                 Console.Clear();
-                string materialausgabe = Material(0);
+                (string materialklasse, double zugfestigkkeit, double streckgrenze) = Material();
+                //double materialausgabe = Material(0,0);
                 Console.Clear();
                 string gewindeausgabe = Gewinde(0);
                 Console.Clear();
@@ -40,13 +41,14 @@ namespace ConsoleTest
                 Console.WriteLine("\n\n Länge: " + laengenausgabe + " mm");
                 Console.WriteLine(" Durchmesser: " + durchmesserausgabe + " mm");
                 Console.WriteLine(" Schraubenkopf: " + schraubenkopfausgabe);
-                Console.WriteLine(" Material: " + materialausgabe);
+                Console.WriteLine(" Material: " + materialklasse);
                 Console.WriteLine(" Gewinde: " + gewindeausgabe);
 
-                Console.WriteLine("\n\n Berechnete Größen: ");
+                Console.WriteLine("\n\n Berechnete Größen: \n");
 
                 //Hier kommen die Methoden für die Berechnungen hin..
-
+                Console.WriteLine("Rm = " + zugfestigkkeit + " MPa");
+                Console.WriteLine("Re = " + streckgrenze + " MPa\n");
                 //Durchgangsbohrung
                 Console.WriteLine("Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen() ,durchmesserausgabe));
 
@@ -62,7 +64,7 @@ namespace ConsoleTest
                 //Streckgrenze berechnen
                 //Es müsste die materialausgabe als Integer erfolgen und nicht als String
                 //Bisher wird die Eingabe für das Material als Int in einem Unterprogramm gemacht, sodass sie hier nicht verwendet werden kann 
-                Console.WriteLine("Die Streckgrenze liegt bei:   " + BerechnungStreckgrenze(materialausgabe) + "MPa");
+               // Console.WriteLine("Die Streckgrenze liegt bei:   " + BerechnungStreckgrenze(materialausgabe) + "MPa");
 
                 //Ausgabe der errechneten Daten
 
@@ -150,10 +152,13 @@ namespace ConsoleTest
             return schraubenart;
         }
 
-        static public string Material(int d)
+        public static  (string, double, double) Material()
         {
             int materialauswahl;
             string materialart = "0";
+            double materialzugfestigkeit=0;
+            double materialstreckgrenze = 0;
+
 
             Console.WriteLine("\n Material auswählen: ");
             Console.WriteLine("\n <1> Stahl 8.8");
@@ -169,12 +174,19 @@ namespace ConsoleTest
             {
                 case 1:
                     materialart = "Stahl 8.8";
+                    materialzugfestigkeit = 800;
+                    materialstreckgrenze = 640;
+
                     break;
                 case 2:
                     materialart = "Stahl 10.9";
+                    materialzugfestigkeit = 1000;
+                    materialstreckgrenze = 900;
                     break;
                 case 3:
                     materialart = "Stahl 12.9";
+                    materialzugfestigkeit = 1200;
+                    materialstreckgrenze = 1080;
                     break;
                 case 4:
                     materialart = "Nichtrostender Stahl A4-50";
@@ -184,10 +196,12 @@ namespace ConsoleTest
                     break;
             }
 
-            Console.WriteLine("\n Gewähltes Material: " + materialart);
+            
+            Console.WriteLine("\n Gewähltes Material: " + materialart+" mit \n\n Rm = "+materialzugfestigkeit+" MPa und \n Re = "+materialstreckgrenze+" MPa");
             Console.ReadKey();
 
-            return materialart;
+            return (materialart, materialzugfestigkeit, materialstreckgrenze);
+            
         }
 
         static public string Gewinde(int e)
@@ -309,34 +323,7 @@ namespace ConsoleTest
             // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
         }
 
-        static public double BerechnungStreckgrenze(int materialausgabe)
-        {
-            double Streckgrenze = 0;
-
-            switch (materialausgabe)
-            { case 1:
-                Streckgrenze = 640;
-                break;
-
-                case 2:
-                Streckgrenze = 900;
-                break;
-
-                case 3:
-                Streckgrenze = 1080;
-                break;
-
-                case 4:
-                Streckgrenze = 210;
-                break;
-
-                default:
-                Streckgrenze = 0;
-                break;
-            }
-
-            return Streckgrenze;
-        }
+        
 
         static public double[,] Tabellen () // Funktion die ein Array zurückgeben soll
         {
