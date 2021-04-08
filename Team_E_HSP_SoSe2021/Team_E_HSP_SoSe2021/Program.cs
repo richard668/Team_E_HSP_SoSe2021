@@ -53,6 +53,17 @@ namespace ConsoleTest
                 //Senkdurchmesser Zylinderschraube
                 Console.WriteLine("Durchmesser der Senkung für Zylinderkopf:  " + BerechnungSenkdurchmesser(Tabellen(), durchmesserausgabe));
 
+                //Senktiefe Zylinderschraube
+                Console.WriteLine("Tiefe der Senkung für Zylinderkopf:  " + BerechnungSenktiefe(Tabellen(), durchmesserausgabe));
+
+                //Durchmesser Kegelsenkung
+                Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmesserausgabe));
+
+                //Streckgrenze berechnen
+                //Es müsste die materialausgabe als Integer erfolgen und nicht als String
+                //Bisher wird die Eingabe für das Material als Int in einem Unterprogramm gemacht, sodass sie hier nicht verwendet werden kann 
+                Console.WriteLine("Die Streckgrenze liegt bei:   " + BerechnungStreckgrenze(materialausgabe) + "MPa");
+
                 //Ausgabe der errechneten Daten
 
 
@@ -145,8 +156,11 @@ namespace ConsoleTest
             string materialart = "0";
 
             Console.WriteLine("\n Material auswählen: ");
-            Console.WriteLine("\n <1> Material 1");
-            Console.WriteLine(" <2> Material 2");
+            Console.WriteLine("\n <1> Stahl 8.8");
+            Console.WriteLine(" <2> Stahl 10.9");
+            Console.WriteLine(" <3> Stahl 12.9");
+            Console.WriteLine(" <4> Nichtrostender Stahl A4-50");
+
 
             materialauswahl = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
@@ -154,10 +168,16 @@ namespace ConsoleTest
             switch (materialauswahl)
             {
                 case 1:
-                    materialart = "Material 1";
+                    materialart = "Stahl 8.8";
                     break;
                 case 2:
-                    materialart = "Material 2";
+                    materialart = "Stahl 10.9";
+                    break;
+                case 3:
+                    materialart = "Stahl 12.9";
+                    break;
+                case 4:
+                    materialart = "Nichtrostender Stahl A4-50";
                     break;
                 default:
                     materialart = "-/-";
@@ -247,6 +267,75 @@ namespace ConsoleTest
             return Senkdurchmesser;
 
             // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
+        }
+
+        static public double BerechnungSenktiefe(double[,] Tabelle, double durchmesserausgabe) // 
+        {
+
+            //Duchgangbohrung Durchmesser
+            double Senktiefe = 0; // Wert der am Ende ausgegeben werden soll
+            int jj = 0; // Variable die zum hochzählen verwendet werden soll
+            int M = 0; // double der in der Tabelle steht in einen int umwandeln
+            for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+            {
+                M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                {
+                    Senktiefe = Tabelle[jj, 3]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
+                }
+            }
+            return Senktiefe;
+
+            // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
+        }
+
+        static public double BerechnungDurchmesserKegelsenkung(double[,] Tabelle, double durchmesserausgabe) // 
+        {
+
+            //Duchgangbohrung Durchmesser
+            double DurchmesserKegelsenkung = 0; // Wert der am Ende ausgegeben werden soll
+            int jj = 0; // Variable die zum hochzählen verwendet werden soll
+            int M = 0; // double der in der Tabelle steht in einen int umwandeln
+            for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+            {
+                M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                {
+                    DurchmesserKegelsenkung = Tabelle[jj, 4]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
+                }
+            }
+            return DurchmesserKegelsenkung;
+
+            // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
+        }
+
+        static public double BerechnungStreckgrenze(int materialausgabe)
+        {
+            double Streckgrenze = 0;
+
+            switch (materialausgabe)
+            { case 1:
+                Streckgrenze = 640;
+                break;
+
+                case 2:
+                Streckgrenze = 900;
+                break;
+
+                case 3:
+                Streckgrenze = 1080;
+                break;
+
+                case 4:
+                Streckgrenze = 210;
+                break;
+
+                default:
+                Streckgrenze = 0;
+                break;
+            }
+
+            return Streckgrenze;
         }
 
         static public double[,] Tabellen () // Funktion die ein Array zurückgeben soll
