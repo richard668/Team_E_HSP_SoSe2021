@@ -19,7 +19,12 @@ namespace ConsoleTest
             Console.WriteLine(" Schraubenkopf:");
             Console.WriteLine(" Material:");
             Console.WriteLine(" Gewinde:");
-            Console.WriteLine("\n\n\n Zum Fortfahren ENTER drücken..");
+            Console.WriteLine(" Festigkeiten");
+            Console.WriteLine(" Durchmesser der Durchgangsbohrung:");
+            Console.WriteLine(" Senkungen");
+
+
+          Console.WriteLine("\n\n\n Zum Fortfahren ENTER drücken..");
             Console.ReadKey();
 
             string auswahl;
@@ -32,7 +37,6 @@ namespace ConsoleTest
                 string schraubenkopfausgabe = Schraubenkopf(0);
                 Console.Clear();
                 (string materialklasse, double zugfestigkkeit, double streckgrenze) = Material();
-                //double materialausgabe = Material(0,0);
                 Console.Clear();
                 string gewindeausgabe = Gewinde(0);
                 Console.Clear();
@@ -49,22 +53,19 @@ namespace ConsoleTest
                 //Hier kommen die Methoden für die Berechnungen hin..
                 Console.WriteLine("Rm = " + zugfestigkkeit + " MPa");
                 Console.WriteLine("Re = " + streckgrenze + " MPa\n");
+
+
                 //Durchgangsbohrung
-                Console.WriteLine("Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen() ,durchmesserausgabe));
+                Console.WriteLine("Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen() ,durchmesserausgabe)+" mm");
 
                 //Senkdurchmesser Zylinderschraube
-                Console.WriteLine("Durchmesser der Senkung für Zylinderkopf:  " + BerechnungSenkdurchmesser(Tabellen(), durchmesserausgabe));
+                Console.WriteLine("Durchmesser der Senkung für Zylinderkopf:  " + BerechnungSenkdurchmesser(Tabellen(), durchmesserausgabe)+" mm");
 
                 //Senktiefe Zylinderschraube
-                Console.WriteLine("Tiefe der Senkung für Zylinderkopf:  " + BerechnungSenktiefe(Tabellen(), durchmesserausgabe));
+                Console.WriteLine("Tiefe der Senkung für Zylinderkopf:  " + BerechnungSenktiefe(Tabellen(), durchmesserausgabe)+" mm");
 
                 //Durchmesser Kegelsenkung
-                Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmesserausgabe));
-
-                //Streckgrenze berechnen
-                //Es müsste die materialausgabe als Integer erfolgen und nicht als String
-                //Bisher wird die Eingabe für das Material als Int in einem Unterprogramm gemacht, sodass sie hier nicht verwendet werden kann 
-               // Console.WriteLine("Die Streckgrenze liegt bei:   " + BerechnungStreckgrenze(materialausgabe) + "MPa");
+                Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmesserausgabe)+" mm");
 
                 //Ausgabe der errechneten Daten
 
