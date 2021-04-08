@@ -47,10 +47,14 @@ namespace ConsoleTest
 
                 //Hier kommen die Methoden für die Berechnungen hin..
 
+                //Durchgangsbohrung
                 Console.WriteLine("Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen() ,durchmesserausgabe));
 
+                //Senkdurchmesser Zylinderschraube
+                Console.WriteLine("Durchmesser der Senkung für Zylinderkopf:  " + BerechnungSenkdurchmesser(Tabellen(), durchmesserausgabe));
+
                 //Ausgabe der errechneten Daten
-                
+
 
                 Console.ReadKey();
 
@@ -211,22 +215,41 @@ namespace ConsoleTest
             //Duchgangbohrung Durchmesser
             double Durchgangsbohrung = 0; // Wert der am Ende ausgegeben werden soll
             int jj = 0; // Variable die zum hochzählen verwendet werden soll
-            int M = 0; // String der in der Tabelle steht in einen int umwandeln
-            for (jj=0; jj<8; jj++ ) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+            int M = 0; // double der in der Tabelle steht in einen int umwandeln
+            for (jj=0; jj<=8; jj++ ) // durchsuchen der Tabelle nach dem richtigen Durchmesser
             {
                 M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
                 if(durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
                 {
-                    Durchgangsbohrung = Tabelle[jj, 1]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
-                    
+                    Durchgangsbohrung = Tabelle[jj, 1]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben     
                 } 
             }
             return Durchgangsbohrung;
             
               // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
         }
-        
-    static public double[,] Tabellen () // Funktion die ein Array zurückgeben soll
+
+        static public double BerechnungSenkdurchmesser(double[,] Tabelle, double durchmesserausgabe) // 
+        {
+
+            //Duchgangbohrung Durchmesser
+            double Senkdurchmesser = 0; // Wert der am Ende ausgegeben werden soll
+            int jj = 0; // Variable die zum hochzählen verwendet werden soll
+            int M = 0; // double der in der Tabelle steht in einen int umwandeln
+            for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+            {
+                M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                {
+                    Senkdurchmesser = Tabelle[jj, 2]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
+                }
+            }
+            return Senkdurchmesser;
+
+            // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
+        }
+
+        static public double[,] Tabellen () // Funktion die ein Array zurückgeben soll
         {
             // die Werte können nicht mit Formeln errechnet werden, sondern sind auf diese Tabellenwerte genormt
             // deswegen wollten wir die als Tabelle hinterlegen um sie bei den Berechnungen bzw. Ausgaben zu verwenden
