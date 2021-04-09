@@ -34,7 +34,7 @@ namespace ConsoleTest
                 Console.Clear();
                 double durchmesserausgabe = Durchmesser(0);
                 Console.Clear();
-                string schraubenkopfausgabe = Schraubenkopf(0);
+                (string schraubenkopfausgabe, int Schraubenkopfnummer) = Schraubenkopf();
                 Console.Clear();
                 (string materialklasse, double zugfestigkkeit, double streckgrenze) = Material();
                 Console.Clear();
@@ -59,13 +59,16 @@ namespace ConsoleTest
                 Console.WriteLine("Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen() ,durchmesserausgabe)+" mm");
 
                 //Senkdurchmesser Zylinderschraube
-                Console.WriteLine("Durchmesser der Senkung für Zylinderkopf:  " + BerechnungSenkdurchmesser(Tabellen(), durchmesserausgabe)+" mm");
+                if (Schraubenkopfnummer == 2)
+                { Console.WriteLine("Durchmesser der Senkung für Zylinderkopf:  " + BerechnungSenkdurchmesser(Tabellen(), durchmesserausgabe) + " mm"); }
 
                 //Senktiefe Zylinderschraube
-                Console.WriteLine("Tiefe der Senkung für Zylinderkopf:  " + BerechnungSenktiefe(Tabellen(), durchmesserausgabe)+" mm");
+                if (Schraubenkopfnummer == 2)
+                { Console.WriteLine("Tiefe der Senkung für Zylinderkopf:  " + BerechnungSenktiefe(Tabellen(), durchmesserausgabe) + " mm"); }
 
                 //Durchmesser Kegelsenkung
-                Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmesserausgabe)+" mm");
+                if (Schraubenkopfnummer == 3)
+                { Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmesserausgabe) + " mm"); }
 
                 //Ausgabe der errechneten Daten
 
@@ -117,7 +120,7 @@ namespace ConsoleTest
             return eingabeDurchmesser;
         }
 
-        static public string Schraubenkopf(int c)
+        static public (string, int) Schraubenkopf()
         {
             Console.Clear();
             int schraubenauswahl;
@@ -150,7 +153,7 @@ namespace ConsoleTest
             Console.WriteLine("\n Gewählter Kopf: " + schraubenart);
             Console.ReadKey();
 
-            return schraubenart;
+            return (schraubenart, schraubenauswahl);
         }
 
         public static  (string, double, double) Material()
