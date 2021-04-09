@@ -19,6 +19,7 @@ namespace ConsoleTest
             Console.WriteLine(" Schraubenkopf:");
             Console.WriteLine(" Material:");
             Console.WriteLine(" Gewinde:");
+            Console.WriteLine(" Steigung:");
             Console.WriteLine(" Festigkeiten");
             Console.WriteLine(" Durchmesser der Durchgangsbohrung:");
             Console.WriteLine(" Senkungen");
@@ -38,8 +39,15 @@ namespace ConsoleTest
                 Console.Clear();
                 (string materialklasse, double zugfestigkkeit, double streckgrenze) = Material();
                 Console.Clear();
-                string gewindeausgabe = Gewinde(0);
+                (string gewindeausgabe, int Gewindenummer) = Gewinde();
                 Console.Clear();
+
+                //Steigung muss in der Konsole vom Bediener eingegeben werden wenn nicht metrisches Regelgewinde ausgewählt wurde
+                double Steigung = 0;
+
+                if (Gewindenummer == 1)
+                {Steigung = 0; }
+                
 
                 Console.WriteLine("\n\n\n Folgende Eingabeparameter werden übermittelt..");
                 Console.WriteLine("\n\n Länge: " + laengenausgabe + " mm");
@@ -54,6 +62,9 @@ namespace ConsoleTest
                 Console.WriteLine("Rm = " + zugfestigkkeit + " MPa");
                 Console.WriteLine("Re = " + streckgrenze + " MPa\n");
 
+                //Steigung des metrischen Regelgewindes
+                if (Gewindenummer == 1)
+                { Console.WriteLine("Steigung des metrischen Regelgewindes:  " + BerechnungSteigung(Tabellen(), durchmesserausgabe) + " mm"); }
 
                 //Durchgangsbohrung
                 Console.WriteLine("Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen() ,durchmesserausgabe)+" mm");
@@ -70,7 +81,13 @@ namespace ConsoleTest
                 if (Schraubenkopfnummer == 3)
                 { Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmesserausgabe) + " mm"); }
 
-                //Ausgabe der errechneten Daten
+                //Kernlochdurchmesser
+                if (Gewindenummer == 1 | Gewindenummer == 3)
+                { Console.WriteLine("Durchmesser der Kernlochbohrung:  " + BerechnungKernlochbohrung(durchmesserausgabe, Steigung, Tabellen()) + " mm"); }
+
+                //Maximale Belastung der Schraube
+                if (Gewindenummer == 1)
+                { Console.WriteLine("Maximal zulässige Belastung:  " + string.Format("{0:0.00}", (BerechnungMaxBelastung(durchmesserausgabe, Steigung, Tabellen(), streckgrenze))) + "N"); }
 
 
                 Console.ReadKey();
@@ -82,6 +99,7 @@ namespace ConsoleTest
 
         }
         //Hauptprogramm Ende
+
 
 
 
@@ -210,7 +228,7 @@ namespace ConsoleTest
             
         }
 
-        static public string Gewinde(int e)
+        static public (string, int) Gewinde()
         {
             int gewindeauswahl;
             string gewindeart = "0";
@@ -246,7 +264,7 @@ namespace ConsoleTest
             Console.WriteLine("\n Gewähltes Gewinde: " + gewindeart);
             Console.ReadKey();
 
-            return gewindeart;
+            return (gewindeart, gewindeauswahl);
         }
 
     static public double BerechnungDurchgangsbohrung ( double[,]Tabelle ,double durchmesserausgabe) // 
@@ -267,6 +285,26 @@ namespace ConsoleTest
             return Durchgangsbohrung;
             
               // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
+        }
+
+        static public double BerechnungSteigung(double[,] Tabelle, double durchmesserausgabe) // 
+        {
+
+            //Duchgangbohrung Durchmesser
+            double Steigung = 0; // Wert der am Ende ausgegeben werden soll
+            int jj = 0; // Variable die zum hochzählen verwendet werden soll
+            int M = 0; // double der in der Tabelle steht in einen int umwandeln
+            for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+            {
+                M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                {
+                    Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben     
+                }
+            }
+            return Steigung;
+
+            // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
         }
 
         static public double BerechnungSenkdurchmesser(double[,] Tabelle, double durchmesserausgabe) // 
@@ -329,14 +367,57 @@ namespace ConsoleTest
             // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
         }
 
-        
+
+        static public double BerechnungKernlochbohrung(double durchmesserausgabe, double Steigung, double[,] Tabelle)
+        {
+            int jj = 0;
+            int M = 0;
+            if(Steigung == 0)
+            {
+                for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+                {
+                    M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                    if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                    {
+                        Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
+                    }
+                }
+            }
+
+            double Kerndurchmesser = durchmesserausgabe - Steigung;
+
+            return Kerndurchmesser;
+        }
+
+
+        static public double BerechnungMaxBelastung(double durchmesserausgabe, double Steigung, double[,] Tabelle, double Streckgrenze)
+        {
+            int jj = 0;
+            int M = 0;
+            if (Steigung == 0)
+            {
+                for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+                {
+                    M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                    if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                    {
+                        Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
+                    }
+                }
+            }
+            
+            double MaxBelastung = (Math.Pow( ( ( (durchmesserausgabe - 0.6495* Steigung)+(durchmesserausgabe -1.2269* Steigung) )/2 ), 2) ) * Math.PI * 0.25 * Streckgrenze;
+
+            return MaxBelastung;
+        }
+
 
         static public double[,] Tabellen () // Funktion die ein Array zurückgeben soll
         {
             // die Werte können nicht mit Formeln errechnet werden, sondern sind auf diese Tabellenwerte genormt
             // deswegen wollten wir die als Tabelle hinterlegen um sie bei den Berechnungen bzw. Ausgaben zu verwenden
 
-            double[,] Tabelle = new double[9, 5];
+            double[,] Tabelle = new double[9, 6];
 
             //Gewinde Nenndurchmesser
             Tabelle[0, 0] = 3;
@@ -392,6 +473,17 @@ namespace ConsoleTest
             Tabelle[6, 4] = 27.2;
             Tabelle[7, 4] = 34;
             Tabelle[8, 4] = 40.7;
+
+            //Steigung metrisches Regelgewinde
+            Tabelle[0, 5] = 0.5;
+            Tabelle[1, 5] = 0.7;
+            Tabelle[2, 5] = 0.8;
+            Tabelle[3, 5] = 1;
+            Tabelle[4, 5] = 1.25;
+            Tabelle[5, 5] = 1.5;
+            Tabelle[6, 5] = 1.75;
+            Tabelle[7, 5] = 2;
+            Tabelle[8, 5] = 2.5;
 
             return Tabelle;
         }
