@@ -82,11 +82,11 @@ namespace ConsoleTest
                 { Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmesserausgabe) + " mm"); }
 
                 //Kernlochdurchmesser
-                if (Gewindenummer == 1 | Gewindenummer == 3)
+                if (Gewindenummer == 1 |Gewindenummer == 2 | Gewindenummer == 3)
                 { Console.WriteLine("Durchmesser der Kernlochbohrung:  " + BerechnungKernlochbohrung(durchmesserausgabe, Steigung, Tabellen()) + " mm"); }
 
                 //Maximale Belastung der Schraube
-                if (Gewindenummer == 1)
+                if (Gewindenummer == 1 | Gewindenummer ==2 )
                 { Console.WriteLine("Maximal zulässige Belastung:  " + string.Format("{0:0.00}", (BerechnungMaxBelastung(durchmesserausgabe, Steigung, Tabellen(), streckgrenze))) + "N"); }
 
 
