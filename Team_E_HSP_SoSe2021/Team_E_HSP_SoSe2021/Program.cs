@@ -30,9 +30,7 @@ namespace ConsoleTest
 
             string auswahl;
             do
-            {
-                //Console.Clear();
-                //(string gewindeausgabe, int Gewindenummer) = Gewinde();
+            {            
 
                 Console.WriteLine("\nGewinde auswählen..\n");
 
@@ -43,7 +41,7 @@ namespace ConsoleTest
                 Console.Clear();
                 double Steigung = Steigungseingabe(gewindeauswahl);
                 Console.Clear();
-                double laengenausgabe = Laenge(0);
+                double laengenausgabe = Laenge();
                 Console.Clear();
                 (string schraubenkopfausgabe, int Schraubenkopfnummer) = Schraubenkopf();
                 Console.Clear();
@@ -55,15 +53,17 @@ namespace ConsoleTest
                 Console.WriteLine("\n\n\n Folgende Eingabeparameter werden übermittelt..");
                 Console.WriteLine(" \n\n Gewindeart: " + gewindeart);
                 Console.WriteLine(" Durchmesser: " + durchmessereingabe);
-                Console.WriteLine(" Länge: " + laengenausgabe + " mm");
-                
+                Console.WriteLine(" Länge: " + laengenausgabe + " mm");               
                 Console.WriteLine(" Schraubenkopf: " + schraubenkopfausgabe);
                 Console.WriteLine(" Material: " + materialklasse);
-               // Console.WriteLine(" Gewinde: " + gewindeausgabe);
+
+
 
                 Console.WriteLine("\n\n Berechnete Größen: \n");
 
-                //Hier kommen die Methoden für die Berechnungen hin..
+                //Hier kommen die Methoden für die Berechnungen:
+
+                //Zugfestigkeit und Streckgrenze ausgeben
                 Console.WriteLine("Rm = " + zugfestigkkeit + " MPa");
                 Console.WriteLine("Re = " + streckgrenze + " MPa\n");
 
@@ -116,7 +116,10 @@ namespace ConsoleTest
 
 
 
-        static public double Laenge(int a)
+
+
+        //Eingabe der Schaftlänge
+        static public double Laenge()
         {
             Console.Clear();
             double eingabeLaenge;
@@ -173,233 +176,6 @@ namespace ConsoleTest
                     break;
             }
             return steigung;
-        }
-
-
-
-        public static (string, int, string, double, int) DurchmesserMx()
-        {
-            Console.Clear();
-            double steigungMx=0;
-            int durchmesserauswahlMx;
-            string durchmesserbezeichnungMx="0";
-            int nenndurchmesser=0;
-            int feingewindeauswahl;
-            string feingewindebezeichnung = "0";
-            
-
-            Console.WriteLine("\n Durchmesser wählen: \n");
-
-            Console.WriteLine("<1> 3");
-            Console.WriteLine("<2> 4");
-            Console.WriteLine("<3> 5");
-            Console.WriteLine("<4> 6");
-            Console.WriteLine("<5> 8");
-            Console.WriteLine("<6> 10");
-            Console.WriteLine("<7> 12");
-            Console.WriteLine("<8> 16");
-            Console.WriteLine("<9> 20\n");
-                        
-            durchmesserauswahlMx = Convert.ToInt32(Console.ReadLine());
-            Console.Clear();
-
-            switch (durchmesserauswahlMx)
-            {
-                case 1:
-                    durchmesserbezeichnungMx = "M3";
-                    nenndurchmesser = 3;
-                    steigungMx = 0.5;
-                    break;
-
-                case 2:
-                    durchmesserbezeichnungMx = "M4";
-                    nenndurchmesser = 4;
-                    steigungMx = 0.7;
-                    break;
-
-                case 3:
-                    durchmesserbezeichnungMx = "M5";
-                    nenndurchmesser = 5;
-                    steigungMx = 0.8;
-                    break;
-
-                case 4:
-                    durchmesserbezeichnungMx = "M6";
-                    nenndurchmesser = 6;
-                    steigungMx = 1;
-                    break;
-
-                case 5:
-                    durchmesserbezeichnungMx = "M8";
-                    nenndurchmesser = 8;
-                    steigungMx = 1.25;
-                    break;
-
-                case 6:
-                    durchmesserbezeichnungMx = "M10";
-                    nenndurchmesser = 10;
-                    steigungMx = 1.5;
-                    break;
-
-                case 7:
-                    durchmesserbezeichnungMx = "M12";
-                    nenndurchmesser = 12;
-                    steigungMx = 1.75;
-                    break;
-
-                case 8:
-                    durchmesserbezeichnungMx = "M16";
-                    nenndurchmesser = 16;
-                    steigungMx = 2;
-                    break;
-
-                case 9:
-                    durchmesserbezeichnungMx = "M20";
-                    nenndurchmesser = 20;
-                    steigungMx = 2.5;
-                    break;
-
-            }
-
-            Console.WriteLine("\n Gewählter Durchmesser: " + durchmesserbezeichnungMx);
-            Console.ReadKey();
-
-            Console.WriteLine("Für Feingewinde Steigung wählen..");
-            Console.WriteLine("\n<0> Überspringen\n");
-            Console.WriteLine("<1> 0,2");
-            Console.WriteLine("<2> 0,25");
-            Console.WriteLine("<3> 0,35");
-            Console.WriteLine("<4> 0,5");
-            Console.WriteLine("<5> 0,75");
-            Console.WriteLine("<6> 1");
-            Console.WriteLine("<7> 1,5");
-            Console.WriteLine("<8> 2");
-            feingewindeauswahl = Convert.ToInt32(Console.ReadLine());
-            Console.Clear();
-
-            switch (feingewindeauswahl)
-            {
-                case 1:
-
-                    steigungMx = 0.2;
-                    feingewindebezeichnung = " x 0,2";
-                    break;
-
-                case 2:
-
-                    steigungMx = 0.25;
-                    feingewindebezeichnung = " x 0,25";
-                    break;
-
-                case 3:
-
-                    steigungMx = 0.35;
-                    feingewindebezeichnung = " x 0,35";
-                    break;
-
-                case 4:
-
-                    steigungMx = 0.5;
-                    feingewindebezeichnung = " x 0,5";
-                    break;
-
-                case 5:
-
-                    steigungMx = 0.75;
-                    feingewindebezeichnung = " x 0,75";
-                    break;
-
-                case 6:
-
-                    steigungMx = 1;
-                    feingewindebezeichnung = " x 1";
-                    break;
-
-                case 7:
-
-                    steigungMx = 1.5;
-                    feingewindebezeichnung = " x 1,5";
-                    break;
-
-                case 8:
-
-                    steigungMx = 2;
-                    feingewindebezeichnung = " x 2";
-                    break;
-                default:
-                    feingewindebezeichnung = "";
-                    break;
-            }
-            Console.WriteLine("Gewähltes Gewinde: " + durchmesserbezeichnungMx + feingewindebezeichnung);
-            Console.ReadKey();
-                    return (durchmesserbezeichnungMx, nenndurchmesser, feingewindebezeichnung, steigungMx, durchmesserauswahlMx);
-        }
-
-        public static (string, int, double) DurchmesserTr()
-        {
-            Console.Clear();
-            double steigungMx = 0;
-            int durchmesserauswahlMx;
-            string durchmesserbezeichnungMx = "0";
-            int nenndurchmesser = 0;
-
-
-            Console.WriteLine("\n Durchmesser wählen: \n");
-
-            Console.WriteLine("<1> Tr 10 x 2");
-            Console.WriteLine("<2> Tr 12 x 3");
-            Console.WriteLine("<3> Tr 16 x 4");
-            Console.WriteLine("<4> Tr 20 x 4");
-            Console.WriteLine("<5> Tr 24 x 5");
-            Console.WriteLine("<6> Tr 28 x 5\n");
-
-            durchmesserauswahlMx = Convert.ToInt32(Console.ReadLine());
-            Console.Clear();
-
-            switch (durchmesserauswahlMx)
-            {
-                case 1:
-                    durchmesserbezeichnungMx = "Tr 10 x 2";
-                    nenndurchmesser = 10;
-                    steigungMx = 2;
-                    break;
-
-                case 2:
-                    durchmesserbezeichnungMx = "Tr 12 x 3";
-                    nenndurchmesser = 12;
-                    steigungMx = 3;
-                    break;
-
-                case 3:
-                    durchmesserbezeichnungMx = "Tr 16 x 4";
-                    nenndurchmesser = 16;
-                    steigungMx = 4;
-                    break;
-
-                case 4:
-                    durchmesserbezeichnungMx = "Tr 20 x 4";
-                    nenndurchmesser = 20;
-                    steigungMx = 4;
-                    break;
-
-                case 5:
-                    durchmesserbezeichnungMx = "Tr 24 x 5";
-                    nenndurchmesser = 24;
-                    steigungMx = 5;
-                    break;
-
-                case 6:
-                    durchmesserbezeichnungMx = "Tr 28 x 5";
-                    nenndurchmesser = 28;
-                    steigungMx = 5;
-                    break;
-
-            }
-
-            Console.WriteLine("\n Gewähltes Gewinde: " + durchmesserbezeichnungMx);
-            Console.ReadKey();
-
-            return (durchmesserbezeichnungMx, nenndurchmesser, steigungMx);
         }
 
 
@@ -685,10 +461,10 @@ namespace ConsoleTest
         }
 
 
-        static public double[,] Tabellen () // Funktion die ein Array zurückgeben soll
+        static public double[,] Tabellen () // Funktion die ein Array zurückgibt
         {
             // die Werte können nicht mit Formeln errechnet werden, sondern sind auf diese Tabellenwerte genormt
-            // deswegen wollten wir die als Tabelle hinterlegen um sie bei den Berechnungen bzw. Ausgaben zu verwenden
+            // deswegen haben wir die als Tabelle hinterlegt um sie bei den Berechnungen bzw. Ausgaben zu verwenden
 
             double[,] Tabelle = new double[9, 6];
 
@@ -759,6 +535,242 @@ namespace ConsoleTest
             Tabelle[8, 5] = 2.5;
 
             return Tabelle;
+        }
+
+
+
+
+
+
+
+
+        //alte Programmteile
+
+        //aktuell ungenutzte Funktion
+        public static (string, int, string, double, int) DurchmesserMx()
+        {
+            Console.Clear();
+            double steigungMx = 0;
+            int durchmesserauswahlMx;
+            string durchmesserbezeichnungMx = "0";
+            int nenndurchmesser = 0;
+            int feingewindeauswahl;
+            string feingewindebezeichnung = "0";
+
+
+            Console.WriteLine("\n Durchmesser wählen: \n");
+
+            Console.WriteLine("<1> 3");
+            Console.WriteLine("<2> 4");
+            Console.WriteLine("<3> 5");
+            Console.WriteLine("<4> 6");
+            Console.WriteLine("<5> 8");
+            Console.WriteLine("<6> 10");
+            Console.WriteLine("<7> 12");
+            Console.WriteLine("<8> 16");
+            Console.WriteLine("<9> 20\n");
+
+            durchmesserauswahlMx = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
+
+            switch (durchmesserauswahlMx)
+            {
+                case 1:
+                    durchmesserbezeichnungMx = "M3";
+                    nenndurchmesser = 3;
+                    steigungMx = 0.5;
+                    break;
+
+                case 2:
+                    durchmesserbezeichnungMx = "M4";
+                    nenndurchmesser = 4;
+                    steigungMx = 0.7;
+                    break;
+
+                case 3:
+                    durchmesserbezeichnungMx = "M5";
+                    nenndurchmesser = 5;
+                    steigungMx = 0.8;
+                    break;
+
+                case 4:
+                    durchmesserbezeichnungMx = "M6";
+                    nenndurchmesser = 6;
+                    steigungMx = 1;
+                    break;
+
+                case 5:
+                    durchmesserbezeichnungMx = "M8";
+                    nenndurchmesser = 8;
+                    steigungMx = 1.25;
+                    break;
+
+                case 6:
+                    durchmesserbezeichnungMx = "M10";
+                    nenndurchmesser = 10;
+                    steigungMx = 1.5;
+                    break;
+
+                case 7:
+                    durchmesserbezeichnungMx = "M12";
+                    nenndurchmesser = 12;
+                    steigungMx = 1.75;
+                    break;
+
+                case 8:
+                    durchmesserbezeichnungMx = "M16";
+                    nenndurchmesser = 16;
+                    steigungMx = 2;
+                    break;
+
+                case 9:
+                    durchmesserbezeichnungMx = "M20";
+                    nenndurchmesser = 20;
+                    steigungMx = 2.5;
+                    break;
+
+            }
+
+            Console.WriteLine("\n Gewählter Durchmesser: " + durchmesserbezeichnungMx);
+            Console.ReadKey();
+
+            Console.WriteLine("Für Feingewinde Steigung wählen..");
+            Console.WriteLine("\n<0> Überspringen\n");
+            Console.WriteLine("<1> 0,2");
+            Console.WriteLine("<2> 0,25");
+            Console.WriteLine("<3> 0,35");
+            Console.WriteLine("<4> 0,5");
+            Console.WriteLine("<5> 0,75");
+            Console.WriteLine("<6> 1");
+            Console.WriteLine("<7> 1,5");
+            Console.WriteLine("<8> 2");
+            feingewindeauswahl = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
+
+            switch (feingewindeauswahl)
+            {
+                case 1:
+
+                    steigungMx = 0.2;
+                    feingewindebezeichnung = " x 0,2";
+                    break;
+
+                case 2:
+
+                    steigungMx = 0.25;
+                    feingewindebezeichnung = " x 0,25";
+                    break;
+
+                case 3:
+
+                    steigungMx = 0.35;
+                    feingewindebezeichnung = " x 0,35";
+                    break;
+
+                case 4:
+
+                    steigungMx = 0.5;
+                    feingewindebezeichnung = " x 0,5";
+                    break;
+
+                case 5:
+
+                    steigungMx = 0.75;
+                    feingewindebezeichnung = " x 0,75";
+                    break;
+
+                case 6:
+
+                    steigungMx = 1;
+                    feingewindebezeichnung = " x 1";
+                    break;
+
+                case 7:
+
+                    steigungMx = 1.5;
+                    feingewindebezeichnung = " x 1,5";
+                    break;
+
+                case 8:
+
+                    steigungMx = 2;
+                    feingewindebezeichnung = " x 2";
+                    break;
+                default:
+                    feingewindebezeichnung = "";
+                    break;
+            }
+            Console.WriteLine("Gewähltes Gewinde: " + durchmesserbezeichnungMx + feingewindebezeichnung);
+            Console.ReadKey();
+            return (durchmesserbezeichnungMx, nenndurchmesser, feingewindebezeichnung, steigungMx, durchmesserauswahlMx);
+        }
+
+        //aktuell ungenutzte Funktion
+        public static (string, int, double) DurchmesserTr()
+        {
+            Console.Clear();
+            double steigungMx = 0;
+            int durchmesserauswahlMx;
+            string durchmesserbezeichnungMx = "0";
+            int nenndurchmesser = 0;
+
+
+            Console.WriteLine("\n Durchmesser wählen: \n");
+
+            Console.WriteLine("<1> Tr 10 x 2");
+            Console.WriteLine("<2> Tr 12 x 3");
+            Console.WriteLine("<3> Tr 16 x 4");
+            Console.WriteLine("<4> Tr 20 x 4");
+            Console.WriteLine("<5> Tr 24 x 5");
+            Console.WriteLine("<6> Tr 28 x 5\n");
+
+            durchmesserauswahlMx = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
+
+            switch (durchmesserauswahlMx)
+            {
+                case 1:
+                    durchmesserbezeichnungMx = "Tr 10 x 2";
+                    nenndurchmesser = 10;
+                    steigungMx = 2;
+                    break;
+
+                case 2:
+                    durchmesserbezeichnungMx = "Tr 12 x 3";
+                    nenndurchmesser = 12;
+                    steigungMx = 3;
+                    break;
+
+                case 3:
+                    durchmesserbezeichnungMx = "Tr 16 x 4";
+                    nenndurchmesser = 16;
+                    steigungMx = 4;
+                    break;
+
+                case 4:
+                    durchmesserbezeichnungMx = "Tr 20 x 4";
+                    nenndurchmesser = 20;
+                    steigungMx = 4;
+                    break;
+
+                case 5:
+                    durchmesserbezeichnungMx = "Tr 24 x 5";
+                    nenndurchmesser = 24;
+                    steigungMx = 5;
+                    break;
+
+                case 6:
+                    durchmesserbezeichnungMx = "Tr 28 x 5";
+                    nenndurchmesser = 28;
+                    steigungMx = 5;
+                    break;
+
+            }
+
+            Console.WriteLine("\n Gewähltes Gewinde: " + durchmesserbezeichnungMx);
+            Console.ReadKey();
+
+            return (durchmesserbezeichnungMx, nenndurchmesser, steigungMx);
         }
 
     }
