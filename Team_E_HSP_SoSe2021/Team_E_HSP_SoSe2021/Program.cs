@@ -180,9 +180,9 @@ namespace ConsoleTest
             }
             else
             {
-                string ausgabe = Witworth[de, 0];
-                gewählterDurchmesser = Convert.ToDouble(Witworth[de-1, 0]);
-                Console.WriteLine("\n Gewählter Durchmesser: " + ausgabe);
+                string ausgabe = Witworth[de-1, 0];
+                gewählterDurchmesser = Convert.ToDouble(Witworth[de-1, 1]);
+                Console.WriteLine("\n Gewählter Durchmesser: " + ausgabe + "''");
                 Console.ReadKey();
             }
 
