@@ -20,9 +20,9 @@ namespace ConsoleTest
             Console.WriteLine(" Material:");
             Console.WriteLine(" Länge:");
             Console.WriteLine(" Steigung:");
-            Console.WriteLine(" Festigkeiten");
+            Console.WriteLine(" Festigkeiten:");
             Console.WriteLine(" Durchmesser der Durchgangsbohrung:");
-            Console.WriteLine(" Senkungen");
+            Console.WriteLine(" Senkungen:");
 
 
           Console.WriteLine("\n\n\n Zum Fortfahren ENTER drücken..");
@@ -37,7 +37,7 @@ namespace ConsoleTest
                 Console.Clear();
                 (string gewindeart, int gewindeauswahl) = Gewinde();
                 Console.Clear();
-                double durchmessereingabe = Durchmesser();
+                double durchmessereingabe = Durchmesser(gewindeauswahl, Tabellen(), WitworthTabelle());
                 Console.Clear();
                 double Steigung = Steigungseingabe(gewindeauswahl);
                 Console.Clear();
@@ -71,12 +71,13 @@ namespace ConsoleTest
                 if (gewindeauswahl == 1)
                 { Console.WriteLine("Steigung des metrischen Regelgewindes:  " + BerechnungSteigung(Tabellen(), durchmessereingabe) + " mm");}
 
-                //Steigung des metrischen Feingewindes oder des Trapezgewindes
-                if (gewindeauswahl == 2 | gewindeauswahl == 3)
+                //Steigung des metrischen Feingewindes
+                if (gewindeauswahl == 2 )
                 { Console.WriteLine("Ausgewählte Steigung: " + Steigung + "mm"); }
 
                 //Durchgangsbohrung
-                Console.WriteLine("Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen() ,durchmessereingabe)+" mm");
+                if (gewindeauswahl != 3)
+                { Console.WriteLine("Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen(), durchmessereingabe) + " mm"); }
 
                 //Senkdurchmesser Zylinderschraube
                 if (Schraubenkopfnummer == 2)
@@ -90,8 +91,8 @@ namespace ConsoleTest
                 if (Schraubenkopfnummer == 3)
                 { Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmessereingabe) + " mm"); }
 
-                //Kernlochdurchmesser für metrische und Trapezgewinde
-                if (gewindeauswahl == 1 | gewindeauswahl == 2 | gewindeauswahl == 3)
+                //Kernlochdurchmesser für metrische Gewinde
+                if (gewindeauswahl == 1 | gewindeauswahl == 2 )
                 { Console.WriteLine("Durchmesser der Kernlochbohrung:  " + BerechnungKernlochbohrung(durchmessereingabe, Steigung, Tabellen()) + " mm"); }
 
                 //Maximale Belastung der Schraube für metrische Gewinde
@@ -136,19 +137,57 @@ namespace ConsoleTest
         }
 
         //Eingabe des Durchmessers unabhängig von der Gewindeart
-        public static double Durchmesser()
+        public static double Durchmesser(int gewindeauswahl, double [,]Tabelle, string [,]Witworth)
         {
             Console.Clear();
-            double durchmessereingabe;
 
-            Console.WriteLine("\n Gewinde Durchmesser eingeben: \n");
-            durchmessereingabe = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("\n Gewinde Durchmesser auswählen: \n");
+            if (gewindeauswahl == 1 | gewindeauswahl == 2)
+            {
+                Console.WriteLine("\n <1> M3");
+                Console.WriteLine(" <2> M4");
+                Console.WriteLine(" <3> M5");
+                Console.WriteLine(" <4> M6");
+                Console.WriteLine(" <5> M8");
+                Console.WriteLine(" <6> M10");
+                Console.WriteLine(" <7> M12");
+                Console.WriteLine(" <8> M16");
+                Console.WriteLine(" <9> M20");
+            }
+            else
+            {
+                Console.WriteLine("\n <1> 1/4''");
+                Console.WriteLine(" <2> 3/8''");
+                Console.WriteLine(" <3> 1/2''");
+                Console.WriteLine(" <4> 3/4''");
+                Console.WriteLine(" <5> 1''");
+                Console.WriteLine(" <6> 1 1/4''");
+                Console.WriteLine(" <7> 1 1/2''");
+                Console.WriteLine(" <8> 2''");
+            }
+
+            int de = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
 
-            Console.WriteLine("\n Gewählter Durchmesser: " + durchmessereingabe + " mm");
-            Console.ReadKey();
+            double gewählterDurchmesser = 0;
 
-            return durchmessereingabe;
+            if (gewindeauswahl == 1 | gewindeauswahl == 2)
+            {
+                double ausgabe = Tabelle[de -1, 0];
+                gewählterDurchmesser = ausgabe;
+                Console.WriteLine("\n Gewählter Durchmesser:  M" + ausgabe);
+                Console.ReadKey();
+            }
+            else
+            {
+                string ausgabe = Witworth[de, 0];
+                gewählterDurchmesser = Convert.ToDouble(Witworth[de-1, 0]);
+                Console.WriteLine("\n Gewählter Durchmesser: " + ausgabe);
+                Console.ReadKey();
+            }
+
+          
+            return gewählterDurchmesser;
         }
 
         //Eingabe der Steigung abhängig von der Gewindeart
@@ -165,16 +204,19 @@ namespace ConsoleTest
                     steigung = Convert.ToDouble(Console.ReadLine());
                     break;
                 case 3:
-                    Console.WriteLine("\n Steigung eingeben: \n");
-                    steigung = Convert.ToDouble(Console.ReadLine());
-                    break;
-                case 4:
                     steigung = 0;
                     break;
                 default:
                     steigung = 0;
                     break;
             }
+            Console.Clear();
+            if (gewindeauswahl == 2)
+            {
+                Console.WriteLine("\n Gewählte Steigung: " + steigung + " mm");
+                Console.ReadKey();
+            }
+
             return steigung;
         }
 
@@ -277,8 +319,7 @@ namespace ConsoleTest
             Console.WriteLine("\n Gewinde auswählen: ");
             Console.WriteLine("\n <1> Metrisches Regelgewinde");
             Console.WriteLine(" <2> Metrisches Feingewinde");
-            Console.WriteLine(" <3> Trapezgewinde");
-            Console.WriteLine(" <4> Rohrgewinde");
+            Console.WriteLine(" <3> Witworth Gewinde");
 
             gewindeauswahl = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
@@ -293,11 +334,8 @@ namespace ConsoleTest
                     gewindeart = "Metrisches Feingewinde";
                     break;
                 case 3:
-                    gewindeart = "Trapezgewinde";
-                    break;
-                case 4:
-                    gewindeart = "Rohrgewinde";
-                    break;
+                    gewindeart = "Witworth Gewinde";
+                    break;             
                 default:
                     gewindeart = "-/-";
                     break;
@@ -538,16 +576,82 @@ namespace ConsoleTest
         }
 
 
+        static public string[,] WitworthTabelle() // Funktion die ein Array zurückgibt
+        {
+            // die Werte können nicht mit Formeln errechnet werden, sondern sind auf diese Tabellenwerte genormt
+            // deswegen haben wir die als Tabelle hinterlegt um sie bei den Berechnungen bzw. Ausgaben zu verwenden
+
+            string[,] Witworth = new string[8, 6];
+
+            //Gewinde Nenndurchmesser
+            Witworth[0, 0] = "1/4";
+            Witworth[1, 0] = "3/8";
+            Witworth[2, 0] = "1/2";
+            Witworth[3, 0] = "3/4";
+            Witworth[4, 0] = "1";
+            Witworth[5, 0] = "1 1/4";
+            Witworth[6, 0] = "1 1/2";
+            Witworth[7, 0] = "2";
+
+            //Außendurchmesser
+            Witworth[0, 1] = "6.35";
+            Witworth[1, 1] = "9.53";
+            Witworth[2, 1] = "12.7";
+            Witworth[3, 1] = "19.05";
+            Witworth[4, 1] = "25.4";
+            Witworth[5, 1] = "31.75";
+            Witworth[6, 1] = "38.1";
+            Witworth[7, 1] = "50.8";
+
+            //Gangzahl
+            Witworth[0, 2] = "20";
+            Witworth[1, 2] = "16";
+            Witworth[2, 2] = "12";
+            Witworth[3, 2] = "10";
+            Witworth[4, 2] = "8";
+            Witworth[5, 2] = "7";
+            Witworth[6, 2] = "6";
+            Witworth[7, 2] = "4.5";
+
+            //Spannungsquerschnitt
+            Witworth[0, 3] = "17.5";
+            Witworth[1, 3] = "44.1";
+            Witworth[2, 3] = "78.4";
+            Witworth[3, 3] = "196";
+            Witworth[4, 3] = "358";
+            Witworth[5, 3] = "577";
+            Witworth[6, 3] = "839";
+            Witworth[7, 3] = "1491";
+
+            //Kernlochdurchmesser
+            Witworth[0, 4] = "5.1";
+            Witworth[1, 4] = "7.9";
+            Witworth[2, 4] = "10.5";
+            Witworth[3, 4] = "16.3";
+            Witworth[4, 4] = "22";
+            Witworth[5, 4] = "28";
+            Witworth[6, 4] = "33.5";
+            Witworth[7, 4] = "44.5";
+
+            //Flankendurchmesser
+            Witworth[0, 5] = "5.54";
+            Witworth[1, 5] = "8.51";
+            Witworth[2, 5] = "11.35";
+            Witworth[3, 5] = "17.42";
+            Witworth[4, 5] = "23.37";
+            Witworth[5, 5] = "29.43";
+            Witworth[6, 5] = "35.39";
+            Witworth[7, 5] = "47.19";
+            return Witworth;
+
+        }
 
 
 
+            //alte Programmteile
 
-
-
-        //alte Programmteile
-
-        //aktuell ungenutzte Funktion
-        public static (string, int, string, double, int) DurchmesserMx()
+            //aktuell ungenutzte Funktion
+            public static (string, int, string, double, int) DurchmesserMx()
         {
             Console.Clear();
             double steigungMx = 0;
