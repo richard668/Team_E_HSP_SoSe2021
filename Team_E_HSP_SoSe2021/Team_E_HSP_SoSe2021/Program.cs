@@ -25,12 +25,12 @@ namespace ConsoleTest
             Console.WriteLine(" Senkungen:");
 
 
-          Console.WriteLine("\n\n\n Zum Fortfahren ENTER drücken..");
+            Console.WriteLine("\n\n\n Zum Fortfahren ENTER drücken..");
             Console.ReadKey();
 
             string auswahl;
             do
-            {            
+            {
 
                 Console.WriteLine("\nGewinde auswählen..\n");
 
@@ -47,13 +47,13 @@ namespace ConsoleTest
                 Console.Clear();
                 (string materialklasse, double zugfestigkkeit, double streckgrenze) = Material();
                 Console.Clear();
-                
-                
+
+
 
                 Console.WriteLine("\n\n\n Folgende Eingabeparameter werden übermittelt..");
                 Console.WriteLine(" \n\n Gewindeart: " + gewindeart);
                 Console.WriteLine(" Durchmesser: " + durchmessereingabe);
-                Console.WriteLine(" Länge: " + laengenausgabe + " mm");               
+                Console.WriteLine(" Länge: " + laengenausgabe + " mm");
                 Console.WriteLine(" Schraubenkopf: " + schraubenkopfausgabe);
                 Console.WriteLine(" Material: " + materialklasse);
 
@@ -69,10 +69,10 @@ namespace ConsoleTest
 
                 //Steigung des metrischen Regelgewindes
                 if (gewindeauswahl == 1)
-                { Console.WriteLine("Steigung des metrischen Regelgewindes:  " + BerechnungSteigung(Tabellen(), durchmessereingabe) + " mm");}
+                { Console.WriteLine("Steigung des metrischen Regelgewindes:  " + BerechnungSteigung(Tabellen(), durchmessereingabe) + " mm"); }
 
                 //Steigung des metrischen Feingewindes
-                if (gewindeauswahl == 2 )
+                if (gewindeauswahl == 2)
                 { Console.WriteLine("Ausgewählte Steigung: " + Steigung + "mm"); }
 
                 //Durchgangsbohrung
@@ -92,12 +92,12 @@ namespace ConsoleTest
                 { Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmessereingabe) + " mm"); }
 
                 //Kernlochdurchmesser für metrische Gewinde
-                if (gewindeauswahl == 1 | gewindeauswahl == 2 )
+                if (gewindeauswahl == 1 | gewindeauswahl == 2)
                 { Console.WriteLine("Durchmesser der Kernlochbohrung:  " + BerechnungKernlochbohrung(durchmessereingabe, Steigung, Tabellen()) + " mm"); }
 
                 //Maximale Belastung der Schraube für metrische Gewinde
-               if (gewindeauswahl == 1 | gewindeauswahl == 2 )
-               { Console.WriteLine("Maximal zulässige Belastung:  " + string.Format("{0:0.00}", (BerechnungMaxBelastung(durchmessereingabe, Steigung, Tabellen(), streckgrenze))) + "N"); }
+                if (gewindeauswahl == 1 | gewindeauswahl == 2)
+                { Console.WriteLine("Maximal zulässige Belastung:  " + string.Format("{0:0.00}", (BerechnungMaxBelastung(durchmessereingabe, Steigung, Tabellen(), streckgrenze))) + "N"); }
 
 
                 Console.ReadKey();
@@ -137,7 +137,7 @@ namespace ConsoleTest
         }
 
         //Eingabe des Durchmessers unabhängig von der Gewindeart
-        public static double Durchmesser(int gewindeauswahl, double [,]Tabelle, string [,]Witworth)
+        public static double Durchmesser(int gewindeauswahl, double[,] Tabelle, string[,] Witworth)
         {
             Console.Clear();
 
@@ -173,20 +173,20 @@ namespace ConsoleTest
 
             if (gewindeauswahl == 1 | gewindeauswahl == 2)
             {
-                double ausgabe = Tabelle[de -1, 0];
+                double ausgabe = Tabelle[de - 1, 0];
                 gewählterDurchmesser = ausgabe;
                 Console.WriteLine("\n Gewählter Durchmesser:  M" + ausgabe);
                 Console.ReadKey();
             }
             else
             {
-                string ausgabe = Witworth[de-1, 0];
-                gewählterDurchmesser = Convert.ToDouble(Witworth[de-1, 1]);
+                string ausgabe = Witworth[de - 1, 0];
+                gewählterDurchmesser = Convert.ToDouble(Witworth[de - 1, 1]);
                 Console.WriteLine("\n Gewählter Durchmesser: " + ausgabe + "''");
                 Console.ReadKey();
             }
 
-          
+
             return gewählterDurchmesser;
         }
 
@@ -257,11 +257,11 @@ namespace ConsoleTest
             return (schraubenart, schraubenauswahl);
         }
 
-        public static  (string, double, double) Material()
+        public static (string, double, double) Material()
         {
             int materialauswahl;
             string materialart = "0";
-            double materialzugfestigkeit=0;
+            double materialzugfestigkeit = 0;
             double materialstreckgrenze = 0;
 
 
@@ -303,12 +303,12 @@ namespace ConsoleTest
                     break;
             }
 
-            
-            Console.WriteLine("\n Gewähltes Material: " + materialart+" mit \n\n Rm = "+materialzugfestigkeit+" MPa und \n Re = "+materialstreckgrenze+" MPa");
+
+            Console.WriteLine("\n Gewähltes Material: " + materialart + " mit \n\n Rm = " + materialzugfestigkeit + " MPa und \n Re = " + materialstreckgrenze + " MPa");
             Console.ReadKey();
 
             return (materialart, materialzugfestigkeit, materialstreckgrenze);
-            
+
         }
 
         static public (string, int) Gewinde()
@@ -328,25 +328,24 @@ namespace ConsoleTest
             {
                 case 1:
                     gewindeart = "Metrisches Regelgewinde";
-                    
+
                     break;
                 case 2:
                     gewindeart = "Metrisches Feingewinde";
                     break;
                 case 3:
                     gewindeart = "Witworth Gewinde";
-                    break;             
+                    break;
                 default:
                     gewindeart = "-/-";
                     break;
             }
-           
+
             Console.WriteLine("\n Gewähltes Gewinde: " + gewindeart);
             Console.ReadKey();
 
             return (gewindeart, gewindeauswahl);
         }
-        
 
 
 
@@ -354,24 +353,25 @@ namespace ConsoleTest
 
 
 
-        static public double BerechnungDurchgangsbohrung ( double[,]Tabelle ,double durchmesserausgabe) // 
+
+        static public double BerechnungDurchgangsbohrung(double[,] Tabelle, double durchmesserausgabe) // 
         {
 
             //Duchgangbohrung Durchmesser
             double Durchgangsbohrung = 0; // Wert der am Ende ausgegeben werden soll
             int jj = 0; // Variable die zum hochzählen verwendet werden soll
             int M = 0; // double der in der Tabelle steht in einen int umwandeln
-            for (jj=0; jj<=8; jj++ ) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+            for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
             {
                 M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
-                if(durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
                 {
                     Durchgangsbohrung = Tabelle[jj, 1]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben     
-                } 
+                }
             }
             return Durchgangsbohrung;
-            
-              // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
+
+            // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
         }
 
         static public double BerechnungSteigung(double[,] Tabelle, double durchmesserausgabe) // 
@@ -459,7 +459,7 @@ namespace ConsoleTest
         {
             int jj = 0;
             int M = 0;
-            if(Steigung == 0)
+            if (Steigung == 0)
             {
                 for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
                 {
@@ -492,14 +492,14 @@ namespace ConsoleTest
                     }
                 }
             }
-            
-            double MaxBelastung = (Math.Pow( ( ( (durchmesserausgabe - 0.6495* Steigung)+(durchmesserausgabe -1.2269* Steigung) )/2 ), 2) ) * Math.PI * 0.25 * Streckgrenze;
+
+            double MaxBelastung = (Math.Pow((((durchmesserausgabe - 0.6495 * Steigung) + (durchmesserausgabe - 1.2269 * Steigung)) / 2), 2)) * Math.PI * 0.25 * Streckgrenze;
 
             return MaxBelastung;
         }
 
 
-        static public double[,] Tabellen () // Funktion die ein Array zurückgibt
+        static public double[,] Tabellen() // Funktion die ein Array zurückgibt
         {
             // die Werte können nicht mit Formeln errechnet werden, sondern sind auf diese Tabellenwerte genormt
             // deswegen haben wir die als Tabelle hinterlegt um sie bei den Berechnungen bzw. Ausgaben zu verwenden
@@ -645,3 +645,5 @@ namespace ConsoleTest
             return Witworth;
 
         }
+    }
+}
