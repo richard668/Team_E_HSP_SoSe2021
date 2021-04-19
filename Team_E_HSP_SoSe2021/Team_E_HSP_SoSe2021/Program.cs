@@ -42,7 +42,9 @@ namespace ConsoleTest
                 Console.Clear();
                 double steigung = Steigungseingabe(gewindeauswahl);
                 Console.Clear();
-                double laengenausgabe = Laenge();
+                double laengenausgabegewinde = GewindeLaenge();
+                Console.Clear();
+                double laengenausgabeschaft = SchaftLaenge();
                 Console.Clear();
                 (string schraubenkopfausgabe, int Schraubenkopfnummer) = Schraubenkopf();
                 Console.Clear();
@@ -54,7 +56,10 @@ namespace ConsoleTest
                 Console.WriteLine("\n\n\n Folgende Eingabeparameter werden übermittelt..");
                 Console.WriteLine(" \n\n Gewindeart: " + gewindeart);
                 Console.WriteLine(" Durchmesser: " + durchmessereingabe+" mm");
-                Console.WriteLine(" Länge: " + laengenausgabe + " mm");
+                Console.WriteLine(" Gewindelänge: " + laengenausgabegewinde + " mm");
+                Console.WriteLine(" Schaftlänge: " + laengenausgabeschaft + " mm");
+                double gesamtlänge = laengenausgabeschaft + laengenausgabegewinde;
+                Console.WriteLine("Gesamtlänge: "+gesamtlänge+" mm");
                 Console.WriteLine(" Schraubenkopf: " + schraubenkopfausgabe);
                 Console.WriteLine(" Material: " + materialklasse);
 
@@ -75,14 +80,24 @@ namespace ConsoleTest
                     double preisMX = 0.08; // z.B. 0,08 €/g
                     Console.WriteLine("Steigung des metrischen Regelgewindes:  " + BerechnungSteigung(Tabellen(), durchmessereingabe) + " mm");
 
-                    double schaftvolumenMX = Math.Round(SchaftvolumenMX(durchmessereingabe, laengenausgabe), 2);
+                    double gewindevolumenMX = Math.Round(GewindevolumenMX(durchmessereingabe, laengenausgabegewinde), 2);
+                    Console.WriteLine("Gewindevolumen: " + gewindevolumenMX + " mm^3");
+
+                    double schaftvolumenMX = Math.Round(SchaftvolumenMX(durchmessereingabe, laengenausgabeschaft), 2);
                     Console.WriteLine("Schaftvolumen: " + schaftvolumenMX + " mm^3");
 
-                    double schaftmasseMX = Math.Round(dichte * (SchaftvolumenMX(durchmessereingabe, laengenausgabe)), 2);
+                    double gewindemasseMX = Math.Round(dichte * gewindevolumenMX, 2);
+                    Console.WriteLine("Gewindemasse: " + gewindemasseMX + " g");
+
+                    double schaftmasseMX = Math.Round(dichte * schaftvolumenMX, 2);
                     Console.WriteLine("Schaftmasse: " + schaftmasseMX + " g");
 
+                    double gewindepreisMX = Math.Round(preisMX * gewindemasseMX, 2);
                     double schaftpreisMX = Math.Round(preisMX * schaftmasseMX, 2);
-                    Console.WriteLine("Preis: " + schaftpreisMX + " Euro");
+
+                    double gesamtpreisMX = Math.Round(gewindepreisMX + schaftpreisMX,2);
+
+                    Console.WriteLine("Preis: " + gesamtpreisMX + " Euro");
                 }
                 
                 //Ausgabe metrisches Feingewinde
@@ -91,14 +106,24 @@ namespace ConsoleTest
                     double preisMF = 0.12; // z.B. 0,12€/g
                     Console.WriteLine("Ausgewählte Steigung: " + steigung + " mm");
 
-                    double schaftvolumenMF = Math.Round(SchaftvolumenMF(durchmessereingabe, laengenausgabe, steigung), 2);
+                    double gewindevolumenMF = Math.Round(GewindevolumenMF(durchmessereingabe, laengenausgabegewinde, steigung), 2);
+                    Console.WriteLine("Gewindevolumen: " + gewindevolumenMF + " mm^3");
+
+                    double schaftvolumenMF = Math.Round(SchaftvolumenMF(durchmessereingabe, laengenausgabeschaft), 2);
                     Console.WriteLine("Schaftvolumen: " + schaftvolumenMF + " mm^3");
 
-                    double schaftmasseMF = Math.Round(dichte * (SchaftvolumenMF(durchmessereingabe, laengenausgabe, steigung)), 2);
+                    double gewindemasseMF = Math.Round(dichte * gewindevolumenMF, 2);
+                    Console.WriteLine("Gewindemasse: " + gewindemasseMF + " g");
+
+                    double schaftmasseMF = Math.Round(dichte * schaftvolumenMF, 2);
                     Console.WriteLine("Schaftmasse: " + schaftmasseMF + " g");
 
+                    double gewindepreisMF = Math.Round(preisMF * gewindemasseMF, 2);
                     double schaftpreisMF = Math.Round(preisMF * schaftmasseMF, 2);
-                    Console.WriteLine("Preis: " + schaftpreisMF + " Euro");
+
+                    double gesamtpreisMF = Math.Round(gewindepreisMF + schaftpreisMF, 2);
+
+                    Console.WriteLine("Preis: " + gesamtpreisMF + " Euro");
                 }
 
                 //Ausgabe Witworth-Gewinde
@@ -109,14 +134,24 @@ namespace ConsoleTest
                     Console.WriteLine("Gangzahl des Whitworth-Gewindes:  " + Gangzahl) ;
                     Console.WriteLine("Steigung des Whitworth-Gewindes:  " + string.Format("{0:0.00}",WitworthSteigung) + " mm");
 
-                    double schaftvolumenWW = Math.Round(SchaftvolumenWW(durchmessereingabe, laengenausgabe, WitworthSteigung), 2);
-                    Console.WriteLine("Schaftvolumen: "+ schaftvolumenWW+" mm^3");
+                    double gewindevolumenWW = Math.Round(GewindevolumenWW(durchmessereingabe, laengenausgabegewinde, WitworthSteigung), 2);
+                    Console.WriteLine("Gewindevolumen: "+ gewindevolumenWW+" mm^3");
+
+                    double schaftvolumenWW = Math.Round(SchaftvolumenWW(durchmessereingabe, laengenausgabeschaft), 2);
+                    Console.WriteLine("Schaftvolumen: " + schaftvolumenWW + " mm^3");
+
+                    double gewindemasseWW = Math.Round(dichte * gewindevolumenWW, 2);
+                    Console.WriteLine("Gewindemasse: "+gewindemasseWW+" g");
 
                     double schaftmasseWW = Math.Round(dichte * schaftvolumenWW, 2);
-                    Console.WriteLine("Schaftmasse: "+schaftmasseWW+" g");
+                    Console.WriteLine("Schaftmasse: " + schaftmasseWW + " g");
 
-                    double schaftpreisWW = Math.Round(preisWW * schaftmasseWW,2);
-                    Console.WriteLine("Preis: "+schaftpreisWW+" Euro");
+                    double gewindepreisWW = Math.Round(preisWW * gewindemasseWW,2);
+                    double schaftpreisWW = Math.Round(preisWW * schaftmasseWW, 2);
+
+                    double gesamtpreisWW = Math.Round(gewindepreisWW + schaftpreisWW, 2);
+
+                    Console.WriteLine("Preis: " + gesamtpreisWW + " Euro");
                 }
                 
                 //Durchgangsbohrung
@@ -157,46 +192,86 @@ namespace ConsoleTest
 
 
 
-        static public double SchaftvolumenMX(double durchmessereingabe, double laengenausgabe)
+        static public double GewindevolumenMX(double durchmessereingabe, double laengenausgabegewinde)
         {  
             double flankendurchmessre = durchmessereingabe - (0.6495 * (BerechnungSteigung(Tabellen(), durchmessereingabe)));
-            double schaftvolumenMX = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabe;
+            double gewindevolumenMX = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabegewinde;
             
+            return gewindevolumenMX;
+        }
+
+        static public double GewindevolumenMF(double durchmessereingabe, double laengenausgabegewinde, double steigung)
+        {            
+            double flankendurchmessre = durchmessereingabe - (0.6495 * steigung);
+            double gewindevolumenMF = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabegewinde;
+         
+            return gewindevolumenMF;
+        }
+
+        static public double GewindevolumenWW(double durchmessereingabe, double laengenausgabegewinde, double WitworthSteigung)
+        {            
+            double flankendurchmessre = durchmessereingabe - (0.64 * WitworthSteigung);
+            double gewindevolumenWW = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabegewinde;
+            
+            return gewindevolumenWW;
+        }
+
+
+        static public double SchaftvolumenMX(double durchmessereingabe, double laengenausgabeschaft)
+        {
+           // double flankendurchmessre = durchmessereingabe - (0.6495 * (BerechnungSteigung(Tabellen(), durchmessereingabe)));
+            double schaftvolumenMX = (Math.PI / 4) * (Math.Pow(durchmessereingabe, 2)) * laengenausgabeschaft;
+
             return schaftvolumenMX;
         }
 
-        static public double SchaftvolumenMF(double durchmessereingabe, double laengenausgabe, double steigung)
-        {            
-            double flankendurchmessre = durchmessereingabe - (0.6495 * steigung);
-            double schaftvolumenMF = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabe;
-         
+        static public double SchaftvolumenMF(double durchmessereingabe, double laengenausgabeschaft)
+        {
+            //double flankendurchmessre = durchmessereingabe - (0.6495 * steigung);
+            double schaftvolumenMF = (Math.PI / 4) * (Math.Pow(durchmessereingabe, 2)) * laengenausgabeschaft;
+
             return schaftvolumenMF;
         }
 
-        static public double SchaftvolumenWW(double durchmessereingabe, double laengenausgabe, double WitworthSteigung)
-        {            
-            double flankendurchmessre = durchmessereingabe - (0.64 * WitworthSteigung);
-            double schaftvolumenWW = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabe;
-            
+        static public double SchaftvolumenWW(double durchmessereingabe, double laengenausgabeschaft)
+        {
+            //double flankendurchmessre = durchmessereingabe - (0.64 * WitworthSteigung);
+            double schaftvolumenWW = (Math.PI / 4) * (Math.Pow(durchmessereingabe, 2)) * laengenausgabeschaft;
+
             return schaftvolumenWW;
         }
 
 
-
-        //Eingabe der Schaftlänge
-        static public double Laenge()
+        //Eingabe der Gewindelänge
+        static public double GewindeLaenge()
         {
             Console.Clear();
-            double eingabeLaenge;
+            double eingabeLaengegewinde;
 
-            Console.WriteLine("\n Länge eingeben: \n");
-            eingabeLaenge = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("\n Gewindelänge eingeben: \n");
+            eingabeLaengegewinde = Convert.ToDouble(Console.ReadLine());
             Console.Clear();
 
-            Console.WriteLine("\n Gewählte Länge: " + eingabeLaenge + " mm");
+            Console.WriteLine("\n Gewählte Gewindelänge: " + eingabeLaengegewinde + " mm");
             Console.ReadKey();
 
-            return eingabeLaenge;
+            return eingabeLaengegewinde;
+        }
+
+        //Eingabe der Schaftlänge
+        static public double SchaftLaenge()
+        {
+            Console.Clear();
+            double eingabeLaengeSchaft;
+
+            Console.WriteLine("\n Schaftlänge eingeben: \n");
+            eingabeLaengeSchaft = Convert.ToDouble(Console.ReadLine());
+            Console.Clear();
+
+            Console.WriteLine("\n Gewählte Schaftlänge: " + eingabeLaengeSchaft + " mm");
+            Console.ReadKey();
+
+            return eingabeLaengeSchaft;
 
         }
 
