@@ -75,16 +75,12 @@ namespace ConsoleTest
                 if (gewindeauswahl == 2)
                 { Console.WriteLine("Ausgewählte Steigung: " + Steigung + "mm"); }
 
-                //Durchmesser des Witworth Gewindes in mm
-                if (gewindeauswahl == 3)
-                {                    Console.WriteLine("Durchmesser des Witworth-Gewindes:  " +durchmessereingabe + " mm");                }
-
                 //Steigung des Witworth Gewindes
                 if (gewindeauswahl == 3)
                 {
                     (double Gangzahl, double WitworthSteigung) =   BerechnungWitworthSteigung(   WitworthTabelle(), durchmessereingabe   );
-                    Console.WriteLine("Gangzahl des Witworth-Gewindes:  " + Gangzahl) ;
-                    Console.WriteLine("Steigung des Witworth-Gewindes:  " + WitworthSteigung + " mm");
+                    Console.WriteLine("Gangzahl des Whitworth-Gewindes:  " + Gangzahl) ;
+                    Console.WriteLine("Steigung des Whitworth-Gewindes:  " + string.Format("{0:0.00}",WitworthSteigung) + " mm");
                 }
 
                 //Durchgangsbohrung
@@ -103,9 +99,8 @@ namespace ConsoleTest
                 if (Schraubenkopfnummer == 3)
                 { Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmessereingabe) + " mm"); }
 
-                //Kernlochdurchmesser für metrische Gewinde
-                if (gewindeauswahl == 1 | gewindeauswahl == 2)
-                { Console.WriteLine("Durchmesser der Kernlochbohrung:  " + BerechnungKernlochbohrung(durchmessereingabe, Steigung, Tabellen()) + " mm"); }
+                //Kernlochdurchmesser             
+                 Console.WriteLine("Durchmesser der Kernlochbohrung:  " + BerechnungKernlochbohrung(durchmessereingabe, Steigung, Tabellen(), gewindeauswahl, WitworthTabelle()) + " mm"); 
 
                 //Maximale Belastung der Schraube für metrische Gewinde
                 if (gewindeauswahl == 1 | gewindeauswahl == 2)
@@ -467,24 +462,42 @@ namespace ConsoleTest
         }
 
 
-        static public double BerechnungKernlochbohrung(double durchmesserausgabe, double Steigung, double[,] Tabelle)
+        static public double BerechnungKernlochbohrung(double durchmesserausgabe, double Steigung, double[,] Tabelle, int Gewindeauswahl, string[,]Witworth)
         {
             int jj = 0;
-            int M = 0;
-            if (Steigung == 0)
-            {
-                for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+            double M = 0;
+            double Kerndurchmesser = 0;
+
+            //Für metrische Gewinde
+            if (Gewindeauswahl == 1| Gewindeauswahl == 2)
+              {
+                if (Steigung == 0)
                 {
-                    M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                    for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+                    {
+                        M = Convert.ToDouble(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                        if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                        {
+                            Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird übergeben
+                        }
+                    }
+                }
+
+                Kerndurchmesser = durchmesserausgabe - Steigung;
+              }
+
+            //Für Whitworth Gewinde
+            else   
+            {
+                for (jj = 0; jj <= 7; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+                {
+                    M = Convert.ToDouble(Witworth[jj, 1]); //umwandeln der Strings in der Tabelle in int
                     if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
                     {
-                        Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird übergeben
+                        Kerndurchmesser = Convert.ToDouble(Witworth[jj, 4]); // Wert aus der Tabelle wird übergeben
                     }
                 }
             }
-
-            double Kerndurchmesser = durchmesserausgabe - Steigung;
-
             return Kerndurchmesser;
         }
 
@@ -656,14 +669,14 @@ namespace ConsoleTest
             Witworth[7, 3] = "1491";
 
             //Kernlochdurchmesser
-            Witworth[0, 4] = "5,1";
-            Witworth[1, 4] = "7,9";
-            Witworth[2, 4] = "10,5";
-            Witworth[3, 4] = "16,3";
-            Witworth[4, 4] = "22";
-            Witworth[5, 4] = "28";
-            Witworth[6, 4] = "33,5";
-            Witworth[7, 4] = "44,5";
+            Witworth[0, 4] = "4,72";
+            Witworth[1, 4] = "7,49";
+            Witworth[2, 4] = "9,99";
+            Witworth[3, 4] = "15,8";
+            Witworth[4, 4] = "21,34";
+            Witworth[5, 4] = "27,10";
+            Witworth[6, 4] = "32,68";
+            Witworth[7, 4] = "43,57";
 
             //Flankendurchmesser
             Witworth[0, 5] = "5,54";
