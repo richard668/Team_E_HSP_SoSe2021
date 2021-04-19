@@ -31,6 +31,7 @@ namespace ConsoleTest
             string auswahl;
             do
             {
+                double dichte = 0.00785;
 
                 Console.WriteLine("\nGewinde auswählen..\n");
 
@@ -68,27 +69,54 @@ namespace ConsoleTest
                 Console.WriteLine("Re = " + streckgrenze + " MPa\n");
                 Console.WriteLine("\nFlankenwinkel: " + flankenwinkel + "°\n");
                 
-                //Steigung des metrischen Regelgewindes
+                //Ausgabe metrisches Regelgewinde
                 if (gewindeauswahl == 1)
                 {
+                    double preisMX = 0.08; // z.B. 0,08 €/g
                     Console.WriteLine("Steigung des metrischen Regelgewindes:  " + BerechnungSteigung(Tabellen(), durchmessereingabe) + " mm");
-                }
 
-                //Steigung des metrischen Feingewindes
+                    double schaftvolumenMX = Math.Round(SchaftvolumenMX(durchmessereingabe, laengenausgabe), 2);
+                    Console.WriteLine("Schaftvolumen: " + schaftvolumenMX + " mm^3");
+
+                    double schaftmasseMX = Math.Round(dichte * (SchaftvolumenMX(durchmessereingabe, laengenausgabe)), 2);
+                    Console.WriteLine("Schaftmasse: " + schaftmasseMX + " g");
+
+                    double schaftpreisMX = Math.Round(preisMX * schaftmasseMX, 2);
+                    Console.WriteLine("Preis: " + schaftpreisMX + " Euro");
+                }
+                
+                //Ausgabe metrisches Feingewinde
                 if (gewindeauswahl == 2)
                 {
+                    double preisMF = 0.12; // z.B. 0,12€/g
                     Console.WriteLine("Ausgewählte Steigung: " + steigung + " mm");
-                    
+
+                    double schaftvolumenMF = Math.Round(SchaftvolumenMF(durchmessereingabe, laengenausgabe, steigung), 2);
+                    Console.WriteLine("Schaftvolumen: " + schaftvolumenMF + " mm^3");
+
+                    double schaftmasseMF = Math.Round(dichte * (SchaftvolumenMF(durchmessereingabe, laengenausgabe, steigung)), 2);
+                    Console.WriteLine("Schaftmasse: " + schaftmasseMF + " g");
+
+                    double schaftpreisMF = Math.Round(preisMF * schaftmasseMF, 2);
+                    Console.WriteLine("Preis: " + schaftpreisMF + " Euro");
                 }
 
-                //Steigung des Witworth Gewindes
+                //Ausgabe Witworth-Gewinde
                 if (gewindeauswahl == 3)
                 {
-                    
-                    (double Gangzahl, double WitworthSteigung) =   BerechnungWitworthSteigung(   WitworthTabelle(), durchmessereingabe   );
+                    double preisWW = 0.1; // z.B. 0,1€/g
+                    (double Gangzahl, double WitworthSteigung) =   BerechnungWitworthSteigung(WitworthTabelle(), durchmessereingabe);
                     Console.WriteLine("Gangzahl des Whitworth-Gewindes:  " + Gangzahl) ;
                     Console.WriteLine("Steigung des Whitworth-Gewindes:  " + string.Format("{0:0.00}",WitworthSteigung) + " mm");
-                    
+
+                    double schaftvolumenWW = Math.Round(SchaftvolumenWW(durchmessereingabe, laengenausgabe, WitworthSteigung), 2);
+                    Console.WriteLine("Schaftvolumen: "+ schaftvolumenWW+" mm^3");
+
+                    double schaftmasseWW = Math.Round(dichte * schaftvolumenWW, 2);
+                    Console.WriteLine("Schaftmasse: "+schaftmasseWW+" g");
+
+                    double schaftpreisWW = Math.Round(preisWW * schaftmasseWW,2);
+                    Console.WriteLine("Preis: "+schaftpreisWW+" Euro");
                 }
                 
                 //Durchgangsbohrung
@@ -113,8 +141,7 @@ namespace ConsoleTest
                 //Maximale Belastung der Schraube für metrische Gewinde
                
                 Console.WriteLine("Maximal zulässige Belastung:  " + string.Format("{0:0.00}", (BerechnungMaxBelastung(durchmessereingabe, steigung, Tabellen(), streckgrenze, gewindeauswahl, WitworthTabelle())/1000 ) )+ " kN"  );
-
-                                
+                
                 Console.ReadKey();
 
                 Console.WriteLine("\n\n Neu berechnen? (j/n)");
@@ -130,7 +157,29 @@ namespace ConsoleTest
 
 
 
+        static public double SchaftvolumenMX(double durchmessereingabe, double laengenausgabe)
+        {  
+            double flankendurchmessre = durchmessereingabe - (0.6495 * (BerechnungSteigung(Tabellen(), durchmessereingabe)));
+            double schaftvolumenMX = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabe;
+            
+            return schaftvolumenMX;
+        }
 
+        static public double SchaftvolumenMF(double durchmessereingabe, double laengenausgabe, double steigung)
+        {            
+            double flankendurchmessre = durchmessereingabe - (0.6495 * steigung);
+            double schaftvolumenMF = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabe;
+         
+            return schaftvolumenMF;
+        }
+
+        static public double SchaftvolumenWW(double durchmessereingabe, double laengenausgabe, double WitworthSteigung)
+        {            
+            double flankendurchmessre = durchmessereingabe - (0.64 * WitworthSteigung);
+            double schaftvolumenWW = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabe;
+            
+            return schaftvolumenWW;
+        }
 
 
 
@@ -371,9 +420,6 @@ namespace ConsoleTest
 
 
 
-
-
-
         static public double BerechnungDurchgangsbohrung(double[,] Tabelle, double durchmesserausgabe) // 
         {
 
@@ -396,7 +442,7 @@ namespace ConsoleTest
 
         static public double BerechnungSteigung(double[,] Tabelle, double durchmesserausgabe) // 
         {
-
+            
             //Duchgangbohrung Durchmesser
             double Steigung = 0; // Wert der am Ende ausgegeben werden soll
             int jj = 0; // Variable die zum hochzählen verwendet werden soll
@@ -409,6 +455,7 @@ namespace ConsoleTest
                     Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird übergeben     
                 }
             }
+            
             return Steigung;
 
             // Wenn keine Übereinstimmung gefunden wurde sollte noch eine Meldung ausgegeben werden  
@@ -576,7 +623,48 @@ namespace ConsoleTest
             return (Gangzahl, Steigung);
         }
 
+        /*static public double VolumenberechnungSchaft(double durchmesserausgabe, double Steigung, double[,] Tabelle, double Streckgrenze, int Gewindeart, string[,] Witworth)
+        {
+            int jj = 0;
+            double M = 0;
+            double VolumenSchaft = 0;
 
+            if (Gewindeart == 1|Gewindeart==2)
+            {
+
+                for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+                {
+                    M = Convert.ToDouble(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                    if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                    {
+                        Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird übergeben
+                    }
+                }
+
+            }
+            double flankendurchmesser = durchmesserausgabe - 0.6495 * Steigung;
+            VolumenSchaft = (Math.PI * Math.Pow(flankendurchmesser, 2)) / 4;
+
+
+            if (Gewindeart == 3)
+            {
+                double Spannungsquerschnitt = 0;
+
+                for (jj = 0; jj <= 7; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+                {
+                    M = Convert.ToDouble(Witworth[jj, 1]); //umwandeln der Strings in der Tabelle in int
+                    if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                    {
+                        Spannungsquerschnitt = Convert.ToDouble(Witworth[jj, 3]);
+                    }
+                }
+
+                VolumenSchaft = Streckgrenze * Spannungsquerschnitt;
+            }
+
+            return VolumenSchaft;
+        }
+        */
         static public double[,] Tabellen() // Funktion die ein Array zurückgibt
         {
             // die Werte können nicht mit Formeln errechnet werden, sondern sind auf diese Tabellenwerte genormt
