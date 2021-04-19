@@ -104,7 +104,7 @@ namespace ConsoleTest
                 { Console.WriteLine("Tiefe der Senkung für Zylinderkopf:  " + BerechnungSenktiefe(Tabellen(), durchmessereingabe) + " mm"); }
 
                 //Durchmesser Kegelsenkung
-                if (Schraubenkopfnummer == 3)
+                if (Schraubenkopfnummer == 3| gewindeauswahl != 3)
                 { Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmessereingabe) + " mm"); }
 
                 //Kernlochdurchmesser             
