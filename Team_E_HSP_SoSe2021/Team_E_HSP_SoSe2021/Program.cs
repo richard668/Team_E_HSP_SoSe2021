@@ -35,11 +35,11 @@ namespace ConsoleTest
                 Console.WriteLine("\nGewinde auswählen..\n");
 
                 Console.Clear();
-                (string gewindeart, int gewindeauswahl) = Gewinde();
+                (string gewindeart, int gewindeauswahl, double flankenwinkel) = Gewinde();
                 Console.Clear();
                 double durchmessereingabe = Durchmesser(gewindeauswahl, Tabellen(), WitworthTabelle());
                 Console.Clear();
-                double Steigung = Steigungseingabe(gewindeauswahl);
+                double steigung = Steigungseingabe(gewindeauswahl);
                 Console.Clear();
                 double laengenausgabe = Laenge();
                 Console.Clear();
@@ -52,7 +52,7 @@ namespace ConsoleTest
 
                 Console.WriteLine("\n\n\n Folgende Eingabeparameter werden übermittelt..");
                 Console.WriteLine(" \n\n Gewindeart: " + gewindeart);
-                Console.WriteLine(" Durchmesser: " + durchmessereingabe);
+                Console.WriteLine(" Durchmesser: " + durchmessereingabe+" mm");
                 Console.WriteLine(" Länge: " + laengenausgabe + " mm");
                 Console.WriteLine(" Schraubenkopf: " + schraubenkopfausgabe);
                 Console.WriteLine(" Material: " + materialklasse);
@@ -66,23 +66,31 @@ namespace ConsoleTest
                 //Zugfestigkeit und Streckgrenze ausgeben
                 Console.WriteLine("Rm = " + zugfestigkkeit + " MPa");
                 Console.WriteLine("Re = " + streckgrenze + " MPa\n");
-
+                Console.WriteLine("\nFlankenwinkel: " + flankenwinkel + "°\n");
+                
                 //Steigung des metrischen Regelgewindes
                 if (gewindeauswahl == 1)
-                { Console.WriteLine("Steigung des metrischen Regelgewindes:  " + BerechnungSteigung(Tabellen(), durchmessereingabe) + " mm"); }
+                {
+                    Console.WriteLine("Steigung des metrischen Regelgewindes:  " + BerechnungSteigung(Tabellen(), durchmessereingabe) + " mm");
+                }
 
                 //Steigung des metrischen Feingewindes
                 if (gewindeauswahl == 2)
-                { Console.WriteLine("Ausgewählte Steigung: " + Steigung + "mm"); }
+                {
+                    Console.WriteLine("Ausgewählte Steigung: " + steigung + " mm");
+                    
+                }
 
                 //Steigung des Witworth Gewindes
                 if (gewindeauswahl == 3)
                 {
+                    
                     (double Gangzahl, double WitworthSteigung) =   BerechnungWitworthSteigung(   WitworthTabelle(), durchmessereingabe   );
                     Console.WriteLine("Gangzahl des Whitworth-Gewindes:  " + Gangzahl) ;
                     Console.WriteLine("Steigung des Whitworth-Gewindes:  " + string.Format("{0:0.00}",WitworthSteigung) + " mm");
+                    
                 }
-
+                
                 //Durchgangsbohrung
                 if (gewindeauswahl != 3)
                 { Console.WriteLine("Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen(), durchmessereingabe) + " mm"); }
@@ -100,13 +108,13 @@ namespace ConsoleTest
                 { Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmessereingabe) + " mm"); }
 
                 //Kernlochdurchmesser             
-                 Console.WriteLine("Durchmesser der Kernlochbohrung:  " + BerechnungKernlochbohrung(durchmessereingabe, Steigung, Tabellen(), gewindeauswahl, WitworthTabelle()) + " mm"); 
+                 Console.WriteLine("Durchmesser der Kernlochbohrung:  " + BerechnungKernlochbohrung(durchmessereingabe, steigung, Tabellen(), gewindeauswahl, WitworthTabelle()) + " mm"); 
 
                 //Maximale Belastung der Schraube für metrische Gewinde
                
-                Console.WriteLine("Maximal zulässige Belastung:  " + string.Format("{0:0.00}", (BerechnungMaxBelastung(durchmessereingabe, Steigung, Tabellen(), streckgrenze, gewindeauswahl, WitworthTabelle()) ) )+ "N"  );
+                Console.WriteLine("Maximal zulässige Belastung:  " + string.Format("{0:0.00}", (BerechnungMaxBelastung(durchmessereingabe, steigung, Tabellen(), streckgrenze, gewindeauswahl, WitworthTabelle())/1000 ) )+ " kN"  );
 
-
+                                
                 Console.ReadKey();
 
                 Console.WriteLine("\n\n Neu berechnen? (j/n)");
@@ -200,6 +208,7 @@ namespace ConsoleTest
         //Eingabe der Steigung abhängig von der Gewindeart
         public static double Steigungseingabe(int gewindeauswahl)
         {
+            
             double steigung = 0;
             switch (gewindeauswahl)
             {
@@ -226,6 +235,7 @@ namespace ConsoleTest
 
             return steigung;
         }
+
 
 
         static public (string, int) Schraubenkopf()
@@ -318,8 +328,9 @@ namespace ConsoleTest
 
         }
 
-        static public (string, int) Gewinde()
+        static public (string, int,double) Gewinde()
         {
+            double flankenwinkel=0;
             int gewindeauswahl;
             string gewindeart = "0";
 
@@ -335,13 +346,15 @@ namespace ConsoleTest
             {
                 case 1:
                     gewindeart = "Metrisches Regelgewinde";
-
+                    flankenwinkel = 60;
                     break;
                 case 2:
                     gewindeart = "Metrisches Feingewinde";
+                    flankenwinkel = 60;
                     break;
                 case 3:
                     gewindeart = "Witworth Gewinde";
+                    flankenwinkel = 55;                      
                     break;
                 default:
                     gewindeart = "-/-";
@@ -349,11 +362,11 @@ namespace ConsoleTest
             }
 
             Console.WriteLine("\n Gewähltes Gewinde: " + gewindeart);
+            Console.WriteLine("\n Flankenwinkel: " + flankenwinkel+"°");
             Console.ReadKey();
 
-            return (gewindeart, gewindeauswahl);
+            return (gewindeart, gewindeauswahl, flankenwinkel);
         }
-
 
 
 
