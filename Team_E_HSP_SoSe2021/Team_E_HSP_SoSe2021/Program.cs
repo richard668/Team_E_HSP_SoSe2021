@@ -103,8 +103,8 @@ namespace ConsoleTest
                  Console.WriteLine("Durchmesser der Kernlochbohrung:  " + BerechnungKernlochbohrung(durchmessereingabe, Steigung, Tabellen(), gewindeauswahl, WitworthTabelle()) + " mm"); 
 
                 //Maximale Belastung der Schraube für metrische Gewinde
-                if (gewindeauswahl == 1 | gewindeauswahl == 2)
-                { Console.WriteLine("Maximal zulässige Belastung:  " + string.Format("{0:0.00}", (BerechnungMaxBelastung(durchmessereingabe, Steigung, Tabellen(), streckgrenze))) + "N"); }
+               
+                Console.WriteLine("Maximal zulässige Belastung:  " + string.Format("{0:0.00}", (BerechnungMaxBelastung(durchmessereingabe, Steigung, Tabellen(), streckgrenze, gewindeauswahl, WitworthTabelle()) ) )+ "N"  );
 
 
                 Console.ReadKey();
@@ -502,23 +502,43 @@ namespace ConsoleTest
         }
 
 
-        static public double BerechnungMaxBelastung(double durchmesserausgabe, double Steigung, double[,] Tabelle, double Streckgrenze)
+        static public double BerechnungMaxBelastung(double durchmesserausgabe, double Steigung, double[,] Tabelle, double Streckgrenze, int Gewindeart, string[,]Witworth)
         {
             int jj = 0;
-            int M = 0;
-            if (Steigung == 0)
+            double M = 0;
+            double MaxBelastung = 0;
+            if (Gewindeart == 1)
             {
-                for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
-                {
-                    M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
-                    if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                
+                    for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
                     {
-                        Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird übergeben
+                        M = Convert.ToDouble(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                        if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                        {
+                            Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird übergeben
+                        }
                     }
-                }
+                
             }
 
-            double MaxBelastung = (Math.Pow((((durchmesserausgabe - 0.6495 * Steigung) + (durchmesserausgabe - 1.2269 * Steigung)) / 2), 2)) * Math.PI * 0.25 * Streckgrenze;
+            MaxBelastung = (Math.Pow((((durchmesserausgabe - 0.6495 * Steigung) + (durchmesserausgabe - 1.2269 * Steigung)) / 2), 2)) * Math.PI * 0.25 * Streckgrenze;
+
+
+            if (Gewindeart == 3)
+            {
+                double Spannungsquerschnitt = 0;
+
+                for (jj = 0; jj <= 7; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+                {
+                    M = Convert.ToDouble(Witworth[jj, 1]); //umwandeln der Strings in der Tabelle in int
+                    if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                    {
+                        Spannungsquerschnitt = Convert.ToDouble(Witworth[jj, 3]);
+                    }
+                }
+
+                MaxBelastung = Streckgrenze * Spannungsquerschnitt;
+            }
 
             return MaxBelastung;
         }
