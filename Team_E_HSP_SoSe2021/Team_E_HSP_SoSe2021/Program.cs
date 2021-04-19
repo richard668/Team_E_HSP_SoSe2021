@@ -75,6 +75,18 @@ namespace ConsoleTest
                 if (gewindeauswahl == 2)
                 { Console.WriteLine("Ausgewählte Steigung: " + Steigung + "mm"); }
 
+                //Durchmesser des Witworth Gewindes in mm
+                if (gewindeauswahl == 3)
+                {                    Console.WriteLine("Durchmesser des Witworth-Gewindes:  " +durchmessereingabe + " mm");                }
+
+                //Steigung des Witworth Gewindes
+                if (gewindeauswahl == 3)
+                {
+                    (double Gangzahl, double WitworthSteigung) =   BerechnungWitworthSteigung(   WitworthTabelle(), durchmessereingabe   );
+                    Console.WriteLine("Gangzahl des Witworth-Gewindes:  " + Gangzahl) ;
+                    Console.WriteLine("Steigung des Witworth-Gewindes:  " + WitworthSteigung + " mm");
+                }
+
                 //Durchgangsbohrung
                 if (gewindeauswahl != 3)
                 { Console.WriteLine("Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen(), durchmessereingabe) + " mm"); }
@@ -181,7 +193,7 @@ namespace ConsoleTest
             else
             {
                 string ausgabe = Witworth[de - 1, 0];
-                gewählterDurchmesser = Convert.ToDouble(Witworth[de - 1, 1]);
+                gewählterDurchmesser = Double.Parse (Witworth[de - 1, 1]);
                 Console.WriteLine("\n Gewählter Durchmesser: " + ausgabe + "''");
                 Console.ReadKey();
             }
@@ -386,7 +398,7 @@ namespace ConsoleTest
                 M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
                 if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
                 {
-                    Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben     
+                    Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird übergeben     
                 }
             }
             return Steigung;
@@ -406,7 +418,7 @@ namespace ConsoleTest
                 M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
                 if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
                 {
-                    Senkdurchmesser = Tabelle[jj, 2]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
+                    Senkdurchmesser = Tabelle[jj, 2]; // Wert aus der Tabelle wird übergeben
                 }
             }
             return Senkdurchmesser;
@@ -426,7 +438,7 @@ namespace ConsoleTest
                 M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
                 if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
                 {
-                    Senktiefe = Tabelle[jj, 3]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
+                    Senktiefe = Tabelle[jj, 3]; // Wert aus der Tabelle wird übergeben
                 }
             }
             return Senktiefe;
@@ -446,7 +458,7 @@ namespace ConsoleTest
                 M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
                 if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
                 {
-                    DurchmesserKegelsenkung = Tabelle[jj, 4]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
+                    DurchmesserKegelsenkung = Tabelle[jj, 4]; // Wert aus der Tabelle wird übergeben
                 }
             }
             return DurchmesserKegelsenkung;
@@ -466,7 +478,7 @@ namespace ConsoleTest
                     M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
                     if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
                     {
-                        Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
+                        Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird übergeben
                     }
                 }
             }
@@ -488,7 +500,7 @@ namespace ConsoleTest
                     M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
                     if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
                     {
-                        Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben
+                        Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird übergeben
                     }
                 }
             }
@@ -496,6 +508,26 @@ namespace ConsoleTest
             double MaxBelastung = (Math.Pow((((durchmesserausgabe - 0.6495 * Steigung) + (durchmesserausgabe - 1.2269 * Steigung)) / 2), 2)) * Math.PI * 0.25 * Streckgrenze;
 
             return MaxBelastung;
+        }
+
+
+        //Steigung des Witworth Gewindes als Gangzahl und in mm
+        static public (double, double) BerechnungWitworthSteigung (string [,] Witworth, double durchmessereingabe)
+        {
+            double Gangzahl = 0;
+
+            for (int jj = 0; jj <= 7; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+            {
+                 double M = Convert.ToDouble(Witworth[jj, 1]); //umwandeln der Strings in der Tabelle in double
+                if (durchmessereingabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                {
+                   Gangzahl = Convert.ToDouble(Witworth[jj, 2]); // Wert aus der Tabelle wird Gangzahl übergeben
+                }
+            }
+
+            double Steigung = 25.4/ Gangzahl ;
+
+            return (Gangzahl, Steigung);
         }
 
 
@@ -594,14 +626,14 @@ namespace ConsoleTest
             Witworth[7, 0] = "2";
 
             //Außendurchmesser
-            Witworth[0, 1] = "6.35";
-            Witworth[1, 1] = "9.53";
-            Witworth[2, 1] = "12.7";
-            Witworth[3, 1] = "19.05";
-            Witworth[4, 1] = "25.4";
-            Witworth[5, 1] = "31.75";
-            Witworth[6, 1] = "38.1";
-            Witworth[7, 1] = "50.8";
+            Witworth[0, 1] = "6,35";
+            Witworth[1, 1] = "9,53";
+            Witworth[2, 1] = "12,7";
+            Witworth[3, 1] = "19,05";
+            Witworth[4, 1] = "25,4";
+            Witworth[5, 1] = "31,75";
+            Witworth[6, 1] = "38,1";
+            Witworth[7, 1] = "50,8";
 
             //Gangzahl
             Witworth[0, 2] = "20";
@@ -611,12 +643,12 @@ namespace ConsoleTest
             Witworth[4, 2] = "8";
             Witworth[5, 2] = "7";
             Witworth[6, 2] = "6";
-            Witworth[7, 2] = "4.5";
+            Witworth[7, 2] = "4,5";
 
             //Spannungsquerschnitt
-            Witworth[0, 3] = "17.5";
-            Witworth[1, 3] = "44.1";
-            Witworth[2, 3] = "78.4";
+            Witworth[0, 3] = "17,5";
+            Witworth[1, 3] = "44,1";
+            Witworth[2, 3] = "78,4";
             Witworth[3, 3] = "196";
             Witworth[4, 3] = "358";
             Witworth[5, 3] = "577";
@@ -624,24 +656,24 @@ namespace ConsoleTest
             Witworth[7, 3] = "1491";
 
             //Kernlochdurchmesser
-            Witworth[0, 4] = "5.1";
-            Witworth[1, 4] = "7.9";
-            Witworth[2, 4] = "10.5";
-            Witworth[3, 4] = "16.3";
+            Witworth[0, 4] = "5,1";
+            Witworth[1, 4] = "7,9";
+            Witworth[2, 4] = "10,5";
+            Witworth[3, 4] = "16,3";
             Witworth[4, 4] = "22";
             Witworth[5, 4] = "28";
-            Witworth[6, 4] = "33.5";
-            Witworth[7, 4] = "44.5";
+            Witworth[6, 4] = "33,5";
+            Witworth[7, 4] = "44,5";
 
             //Flankendurchmesser
-            Witworth[0, 5] = "5.54";
-            Witworth[1, 5] = "8.51";
-            Witworth[2, 5] = "11.35";
-            Witworth[3, 5] = "17.42";
-            Witworth[4, 5] = "23.37";
-            Witworth[5, 5] = "29.43";
-            Witworth[6, 5] = "35.39";
-            Witworth[7, 5] = "47.19";
+            Witworth[0, 5] = "5,54";
+            Witworth[1, 5] = "8,51";
+            Witworth[2, 5] = "11,35";
+            Witworth[3, 5] = "17,42";
+            Witworth[4, 5] = "23,37";
+            Witworth[5, 5] = "29,43";
+            Witworth[6, 5] = "35,39";
+            Witworth[7, 5] = "47,19";
             return Witworth;
 
         }
