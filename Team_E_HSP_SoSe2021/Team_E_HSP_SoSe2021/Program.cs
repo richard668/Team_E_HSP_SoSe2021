@@ -623,48 +623,7 @@ namespace ConsoleTest
             return (Gangzahl, Steigung);
         }
 
-        /*static public double VolumenberechnungSchaft(double durchmesserausgabe, double Steigung, double[,] Tabelle, double Streckgrenze, int Gewindeart, string[,] Witworth)
-        {
-            int jj = 0;
-            double M = 0;
-            double VolumenSchaft = 0;
-
-            if (Gewindeart == 1|Gewindeart==2)
-            {
-
-                for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
-                {
-                    M = Convert.ToDouble(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
-                    if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
-                    {
-                        Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird übergeben
-                    }
-                }
-
-            }
-            double flankendurchmesser = durchmesserausgabe - 0.6495 * Steigung;
-            VolumenSchaft = (Math.PI * Math.Pow(flankendurchmesser, 2)) / 4;
-
-
-            if (Gewindeart == 3)
-            {
-                double Spannungsquerschnitt = 0;
-
-                for (jj = 0; jj <= 7; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
-                {
-                    M = Convert.ToDouble(Witworth[jj, 1]); //umwandeln der Strings in der Tabelle in int
-                    if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
-                    {
-                        Spannungsquerschnitt = Convert.ToDouble(Witworth[jj, 3]);
-                    }
-                }
-
-                VolumenSchaft = Streckgrenze * Spannungsquerschnitt;
-            }
-
-            return VolumenSchaft;
-        }
-        */
+      
         static public double[,] Tabellen() // Funktion die ein Array zurückgibt
         {
             // die Werte können nicht mit Formeln errechnet werden, sondern sind auf diese Tabellenwerte genormt
