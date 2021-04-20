@@ -166,6 +166,10 @@ namespace ConsoleTest
                 if (Schraubenkopfnummer == 2)
                 { Console.WriteLine("Tiefe der Senkung für Zylinderkopf:  " + BerechnungSenktiefe(Tabellen(), durchmessereingabe) + " mm"); }
 
+                //Schlüsselweite für metrische Gewinde
+                if (gewindeauswahl != 3)
+                { Console.WriteLine("Schlüsselweite: " + AusgabeSchlüsselweite(Schraubenkopfnummer, durchmessereingabe, Tabellen()) + "mm"); }
+
                 //Durchmesser Kegelsenkung
                 if (Schraubenkopfnummer == 3 & gewindeauswahl != 3)
                 { Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmessereingabe) + " mm"); }
@@ -494,8 +498,52 @@ namespace ConsoleTest
 
 
 
+        static public double AusgabeSchlüsselweite(int schraubenkopfnummer, double durchmesserausgabe, double[,]Tabelle)
+        {
+            double Schlüsselweite = 0;
+            int jj = 0; // Variable die zum hochzählen verwendet werden soll
+            int M = 0; // double der in der Tabelle steht in einen int umwandeln
+            if (schraubenkopfnummer==1)
+            {
+                for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+                {
+                    M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                    if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                    {
+                        Schlüsselweite = Tabelle[jj, 7]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben     
+                    }
+                }
+            }
 
-        static public double BerechnungDurchgangsbohrung(double[,] Tabelle, double durchmesserausgabe) // 
+            if (schraubenkopfnummer == 2)
+            {
+                for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+                {
+                    M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                    if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                    {
+                        Schlüsselweite = Tabelle[jj, 9]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben     
+                    }
+                }
+            }
+
+            if (schraubenkopfnummer == 3)
+            {
+                for (jj = 0; jj <= 8; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+                {
+                    M = Convert.ToInt32(Tabelle[jj, 0]); //umwandeln der Strings in der Tabelle in int
+                    if (durchmesserausgabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                    {
+                        Schlüsselweite = Tabelle[jj, 11]; // Wert aus der Tabelle wird Durchgangsbohrung übergeben     
+                    }
+                }
+            }
+
+            return Schlüsselweite;
+        }
+
+
+        static public double BerechnungDurchgangsbohrung(double[,] Tabelle, double durchmesserausgabe) 
         {
 
             //Duchgangbohrung Durchmesser
@@ -704,7 +752,7 @@ namespace ConsoleTest
             // die Werte können nicht mit Formeln errechnet werden, sondern sind auf diese Tabellenwerte genormt
             // deswegen haben wir die als Tabelle hinterlegt um sie bei den Berechnungen bzw. Ausgaben zu verwenden
 
-            double[,] Tabelle = new double[9, 6];
+            double[,] Tabelle = new double[9, 12];
 
             //Gewinde Nenndurchmesser
             Tabelle[0, 0] = 3;
@@ -771,6 +819,74 @@ namespace ConsoleTest
             Tabelle[6, 5] = 1.75;
             Tabelle[7, 5] = 2;
             Tabelle[8, 5] = 2.5;
+
+            //Kopfhöhe Sechskantschraube
+            Tabelle[0, 6] = 2;
+            Tabelle[1, 6] = 2.8;
+            Tabelle[2, 6] = 3.5;
+            Tabelle[3, 6] = 4;
+            Tabelle[4, 6] = 5.3;
+            Tabelle[5, 6] = 6.4;
+            Tabelle[6, 6] = 7.5;
+            Tabelle[7, 6] = 10;
+            Tabelle[8, 6] = 12.5;
+
+            //Schlüsselweite Sechskantschraube
+            Tabelle[0, 7] = 5.5;
+            Tabelle[1, 7] = 7;
+            Tabelle[2, 7] = 8;
+            Tabelle[3, 7] = 10;
+            Tabelle[4, 7] = 13;
+            Tabelle[5, 7] = 16;
+            Tabelle[6, 7] = 18;
+            Tabelle[7, 7] = 24;
+            Tabelle[8, 7] = 30;
+
+            //Kopfdurchmesser Zylinderkopfschraube
+            Tabelle[0, 8] = 5.5;
+            Tabelle[1, 8] = 7;
+            Tabelle[2, 8] = 8.5;
+            Tabelle[3, 8] = 10;
+            Tabelle[4, 8] = 13;
+            Tabelle[5, 8] = 16;
+            Tabelle[6, 8] = 18;
+            Tabelle[7, 8] = 24;
+            Tabelle[8, 8] = 30;
+
+            //Kopfhöhe Zylinderkopfschraube = Nenndurchmesser
+
+            //Schlüsselweite des Innensechskants bei Zylinderkopfschrauben
+            Tabelle[0, 9] = 2.5;
+            Tabelle[1, 9] = 3;
+            Tabelle[2, 9] = 4;
+            Tabelle[3, 9] = 5;
+            Tabelle[4, 9] = 6;
+            Tabelle[5, 9] = 8;
+            Tabelle[6, 9] = 10;
+            Tabelle[7, 9] = 14;
+            Tabelle[8, 9] = 17;
+
+            //Kopfhöhe Senkschrauben
+            Tabelle[0, 10] = 1.9;
+            Tabelle[1, 10] = 2.5;
+            Tabelle[2, 10] = 3.1;
+            Tabelle[3, 10] = 3.7;
+            Tabelle[4, 10] = 5;
+            Tabelle[5, 10] = 6.2;
+            Tabelle[6, 10] = 7.4;
+            Tabelle[7, 10] = 8.8;
+            Tabelle[8, 10] = 10.2;
+
+            //Schlüsselweite des Innensechskants bei Senkschrauben
+            Tabelle[0, 11] = 2;
+            Tabelle[1, 11] = 2.5;
+            Tabelle[2, 11] = 3;
+            Tabelle[3, 11] = 4;
+            Tabelle[4, 11] = 5;
+            Tabelle[5, 11] = 6;
+            Tabelle[6, 11] = 8;
+            Tabelle[7, 11] = 10;
+            Tabelle[8, 11] = 12;
 
             return Tabelle;
         }
