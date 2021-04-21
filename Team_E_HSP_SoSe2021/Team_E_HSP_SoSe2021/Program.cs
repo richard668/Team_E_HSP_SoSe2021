@@ -62,7 +62,7 @@ namespace ConsoleTest
                 Console.WriteLine(" Gewindeart: " + gewindeart);
                 Console.WriteLine(" Durchmesser: " + durchmessereingabe+" mm");
                 Console.WriteLine(" Gewindelänge: " + laengenausgabegewinde + " mm");
-                Console.WriteLine(" Schaftlänge: " + laengenausgabeschaft + " mm");
+                Console.WriteLine(" Schaftlänge: " + laengenausgabeschaft + " mm"); //Gewindeloser Teil
                 double gesamtlänge = laengenausgabeschaft + laengenausgabegewinde;
                 Console.WriteLine(" Gesamtlänge: "+gesamtlänge+" mm");
                 Console.WriteLine(" Schraubenkopf: " + schraubenkopfausgabe);
@@ -474,18 +474,11 @@ namespace ConsoleTest
             Console.Clear();
             double eingabeLaengeSchaft;
 
-            do
-            {
-                Console.WriteLine("\n Schaftlänge eingeben: \n");
-                eingabeLaengeSchaft = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("\n Schaftlänge eingeben: \n");
+            Console.WriteLine("(Gewindefreier Teil)");
 
-                if (eingabeLaengeSchaft < eingabeLaengegewinde)
-                {
-                    Console.WriteLine("Gewindelänge muss kleiner sein als Schaftlänge");
-                    Console.ReadKey();
-                }
-            }
-            while (eingabeLaengeSchaft < eingabeLaengegewinde);
+            eingabeLaengeSchaft = Convert.ToDouble(Console.ReadLine());
+            
             Console.Clear();
 
             Console.WriteLine("\n Gewählte Schaftlänge: " + eingabeLaengeSchaft + " mm");
@@ -681,7 +674,7 @@ namespace ConsoleTest
             Console.WriteLine("\n Gewinde auswählen: ");
             Console.WriteLine("\n <1> Metrisches Regelgewinde");
             Console.WriteLine(" <2> Metrisches Feingewinde");
-            Console.WriteLine(" <3> Witworth Gewinde");
+            Console.WriteLine(" <3> Whitworth Gewinde");
 
             gewindeauswahl = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
