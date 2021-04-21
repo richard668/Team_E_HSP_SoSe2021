@@ -13,20 +13,21 @@ namespace ConsoleTest
         {
             Console.Title = " Schraubenberechnung Team E";
 
-            Console.WriteLine("\n\n\n Folgende Eingaben werden ausgewertet..\n\n");
+            Console.WriteLine("\n\n Folgende Eingaben werden ausgewertet..\n\n");
             Console.WriteLine(" Gewindeauswahl:");
             Console.WriteLine(" Durchmesserauswahl:");
+            Console.WriteLine(" (Steigung):");
             Console.WriteLine(" Gewindelänge:");
             Console.WriteLine(" Schaftlänge:");
             Console.WriteLine(" Schraubenkopfauswahl:");
             Console.WriteLine(" Material:");
-            Console.WriteLine(" (Steigung):");
+            
 
-            Console.WriteLine("\n\nFolgende Berechnungen werden ausgegeben..\n\n");
-
-            Console.WriteLine(" Festigkeiten:");
-            Console.WriteLine(" Durchmesser der Durchgangsbohrung:");
-            Console.WriteLine(" Senkungen:");
+            Console.WriteLine("\n\n Folgende Berechnungen werden ausgegeben..\n\n");
+            Console.WriteLine(" Schraubengeometrie:");
+            Console.WriteLine(" Festigkeitswerte:");
+            Console.WriteLine(" Bohrungen und Senkungen:");
+            Console.WriteLine(" Masse und Preis pro Schraube:");
 
 
             Console.WriteLine("\n\n\n Zum Fortfahren ENTER drücken..");
@@ -50,18 +51,22 @@ namespace ConsoleTest
                 Console.Clear();
                 double laengenausgabeschaft = SchaftLaenge(laengenausgabegewinde);
                 Console.Clear();
+                string schraubenkopfausgabe = "";
+                int Schraubenkopfnummer = 0;
 
-                
-               
-                    (string schraubenkopfausgabe, int Schraubenkopfnummer) = Schraubenkopf();
+                if (gewindeauswahl!=3)
+                {
+                    (schraubenkopfausgabe, Schraubenkopfnummer) = Schraubenkopf();
                     Console.Clear();
-                
+
+                }
+
 
                 (string materialklasse, double zugfestigkkeit, double streckgrenze) = Material();
                 Console.Clear();
 
 
-                Console.WriteLine("\n Folgende Eingabeparameter werden übermittelt..\n");
+                Console.WriteLine("\nFolgende Eingabeparameter werden übermittelt..\n");
                 Console.WriteLine(" Gewindeart: " + gewindeart);
                 if (gewindeauswahl==1|gewindeauswahl==2)
                 {
@@ -69,9 +74,8 @@ namespace ConsoleTest
                 }
                 if (gewindeauswahl==3)
                 {
-                    
                     string durchmessereingabeWW = AusgabeWitworthdurchmesser(WitworthTabelle(), durchmessereingabe);
-                    Console.WriteLine(" Durchmesser: " + durchmessereingabeWW + " ´´");
+                    Console.WriteLine(" Durchmesser: " + durchmessereingabeWW + " ´´ ("+durchmessereingabe+" mm)");
                 }
                 Console.WriteLine(" Gewindelänge: " + laengenausgabegewinde + " mm");
                 Console.WriteLine(" Schaftlänge: " + laengenausgabeschaft + " mm"); //Gewindeloser Teil
@@ -79,28 +83,34 @@ namespace ConsoleTest
                 Console.WriteLine(" Gesamtlänge: "+gesamtlänge+" mm");
 
                 
+                if (gewindeauswahl==3)
+                {
+                    schraubenkopfausgabe = "-/-";
+                }
                 Console.WriteLine(" Schraubenkopf: " + schraubenkopfausgabe);
-                
-                
+
+
                 Console.WriteLine(" Material: " + materialklasse);
 
                 string schraubenbezeichnung = "";
                 if (gewindeauswahl==1)
                 {
                     schraubenbezeichnung = SchraubenbezeichnungMX(gewindeauswahl, Schraubenkopfnummer, durchmessereingabe, gesamtlänge, materialklasse);
+                    Console.WriteLine("\n " + schraubenbezeichnung + "\n");
                 }
 
                 if (gewindeauswahl==2)
                 {
                     schraubenbezeichnung = SchraubenbezeichnungMF(gewindeauswahl, Schraubenkopfnummer, durchmessereingabe, steigung, gesamtlänge, materialklasse);
+                    Console.WriteLine("\n" + schraubenbezeichnung + "\n");
                 }
                 
                
-                Console.WriteLine("\n "+schraubenbezeichnung+"\n");
+                
                 //Console.WriteLine(" Berechnete Größen:");
 
                 //Hier kommen die Methoden für die Berechnungen:
-                Console.WriteLine("\n Schraubengeometrie:\n");
+                Console.WriteLine("\nSchraubengeometrie:\n");
 
                 double gewindepreis = 0;
 
@@ -128,16 +138,23 @@ namespace ConsoleTest
 
                 if (gewindeauswahl == 1)
                 {
-                    Console.WriteLine("Flankenwinkel: " + flankenwinkel + "°");
+                    Console.WriteLine(" Flankenwinkel: " + flankenwinkel + "°");
+                    double flankendurchmessre = Math.Round(durchmessereingabe - (0.6495 * (BerechnungSteigung(Tabellen(), durchmessereingabe))),2);
+                    Console.WriteLine(" Flankendurchmesser: " + flankendurchmessre+" mm");
                 }
 
                 if (gewindeauswahl == 2)
                 {
-                    Console.WriteLine("Flankenwinkel: " + flankenwinkel + "°");
+                    Console.WriteLine(" Flankenwinkel: " + flankenwinkel + "°");
+                    double flankendurchmessre = Math.Round(durchmessereingabe - (0.6495 * steigung),2);
+                    Console.WriteLine(" Flankendurchmesser: " + flankendurchmessre + " mm");
                 }
                 if (gewindeauswahl == 3)
                 {
-                    Console.WriteLine("Flankenwinkel: " + flankenwinkel + "°");
+                    Console.WriteLine(" Flankenwinkel: " + flankenwinkel + "°");
+
+                    string flankendurchmessre = AusgabeWitworthflankendurchmesser(WitworthTabelle(), durchmessereingabe);
+                    Console.WriteLine(" Flankendurchmesser: "+flankendurchmessre+" mm");
                 }
 
 
@@ -150,10 +167,10 @@ namespace ConsoleTest
                 if (gewindeauswahl != 3)
                 {
                     double schlüsselweiteAusgabe = AusgabeSchlüsselweite(Schraubenkopfnummer, durchmessereingabe, Tabellen());
-                    Console.WriteLine("Schlüsselweite: " + schlüsselweiteAusgabe + " mm");
+                    Console.WriteLine(" Schlüsselweite: " + schlüsselweiteAusgabe + " mm");
                     
                     double kopfhöhe = (AusgabeKopfhöhe(Schraubenkopfnummer, durchmessereingabe, Tabellen()));
-                    Console.WriteLine("Kopfhöhe: " + kopfhöhe+" mm");
+                    Console.WriteLine(" Kopfhöhe: " + kopfhöhe+" mm");
 
                     
                     
@@ -184,28 +201,28 @@ namespace ConsoleTest
                
                 Console.WriteLine("\nFestigkeitswerte:\n");
                 //Zugfestigkeit und Streckgrenze ausgeben
-                Console.WriteLine("Rm = " + zugfestigkkeit + " MPa");
-                Console.WriteLine("Re = " + streckgrenze + " MPa");
-                Console.WriteLine("Maximal zulässige Belastung:  " + string.Format("{0:0.00}", (BerechnungMaxBelastung(durchmessereingabe, steigung, Tabellen(), streckgrenze, gewindeauswahl, WitworthTabelle())/1000 ) )+ " kN"  );
+                Console.WriteLine(" Rm = " + zugfestigkkeit + " MPa");
+                Console.WriteLine(" Re = " + streckgrenze + " MPa");
+                Console.WriteLine(" Maximal zulässige Belastung:  " + string.Format("{0:0.00}", (BerechnungMaxBelastung(durchmessereingabe, steigung, Tabellen(), streckgrenze, gewindeauswahl, WitworthTabelle())/1000 ) )+ " kN"  );
 
                 Console.WriteLine("\nSonstiges: \n");
                 //Kernlochdurchmesser             
-                Console.WriteLine("Durchmesser der Kernlochbohrung:  " + BerechnungKernlochbohrung(durchmessereingabe, steigung, Tabellen(), gewindeauswahl, WitworthTabelle()) + " mm");
+                Console.WriteLine(" Durchmesser der Kernlochbohrung:  " + BerechnungKernlochbohrung(durchmessereingabe, steigung, Tabellen(), gewindeauswahl, WitworthTabelle()) + " mm");
 
                 //Durchgangsbohrung
                 if (gewindeauswahl != 3)
-                { Console.WriteLine("Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen(), durchmessereingabe) + " mm"); }
+                { Console.WriteLine(" Durchmesser der Durchgangsbohrung:  " + BerechnungDurchgangsbohrung(Tabellen(), durchmessereingabe) + " mm"); }
 
                 //Senkdurchmesser Zylinderschraube
-                if (Schraubenkopfnummer == 2|gewindeauswahl!=3)
-                { Console.WriteLine("Durchmesser der Senkung für Zylinderkopf:  " + BerechnungSenkdurchmesser(Tabellen(), durchmessereingabe) + " mm"); }
+                if (Schraubenkopfnummer == 2&gewindeauswahl!=3)
+                { Console.WriteLine(" Durchmesser der Senkung für Zylinderkopf:  " + BerechnungSenkdurchmesser(Tabellen(), durchmessereingabe) + " mm"); }
 
                 //Senktiefe Zylinderschraube
-                if (Schraubenkopfnummer == 2|gewindeauswahl!=3)
-                { Console.WriteLine("Tiefe der Senkung für Zylinderkopf:  " + BerechnungSenktiefe(Tabellen(), durchmessereingabe) + " mm"); }
+                if (Schraubenkopfnummer == 2&gewindeauswahl!=3)
+                { Console.WriteLine(" Tiefe der Senkung für Zylinderkopf:  " + BerechnungSenktiefe(Tabellen(), durchmessereingabe) + " mm"); }
                 //Durchmesser Kegelsenkung
-                if (Schraubenkopfnummer == 3|gewindeauswahl!=3)
-                { Console.WriteLine("Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmessereingabe) + " mm"); }
+                if (Schraubenkopfnummer == 3&gewindeauswahl!=3)
+                { Console.WriteLine(" Durchmesser der Senkung für Senkschrauben:  " + BerechnungDurchmesserKegelsenkung(Tabellen(), durchmessereingabe) + " mm"); }
 
                 //Console.WriteLine("Kopfvolumen: " + Math.Round(kopfvolumen, 2) + " mm^3");
                 if (gewindeauswahl==1)
@@ -226,10 +243,10 @@ namespace ConsoleTest
                 }
 
                 double gesamtmasse = Math.Round((kopfvolumen + gewindevolumen + schaftvolumen)*dichte,2);
-                Console.WriteLine("Gesamtmasse pro Schraube: "+gesamtmasse+" g");
+                Console.WriteLine(" Gesamtmasse pro Schraube: "+gesamtmasse+" g");
 
                 double kaufpreis = Math.Round(gewindepreis + kopfpreis, 2);
-                Console.WriteLine("Kaufpreis pro Schraube: " + kaufpreis + " Euro");
+                Console.WriteLine(" Kaufpreis pro Schraube: " + kaufpreis + " Euro");
 
                 Console.ReadKey();
 
@@ -258,27 +275,27 @@ namespace ConsoleTest
 
             if (schraubenkopfnummer == 1 & gewindeauswahl == 1)//Sechskant Regelgewinde
             {
-                schraubenname = "Sechskantschraube";
-                bezugsnorm = "DIN EN ISO 4014";
+                schraubenname = "Sechskantschraube ";
+                bezugsnorm = "DIN EN ISO 4014 ";
                 gewindetyp = "M";
             }
 
             if (schraubenkopfnummer == 2 & gewindeauswahl == 1)//Zylinder Regelgewinde
             {
-                schraubenname = "Zylinderschraube";
-                bezugsnorm = "DIN EN ISO 4762";
+                schraubenname = "Zylinderschraube ";
+                bezugsnorm = "DIN EN ISO 4762 ";
                 gewindetyp = "M";
             }
 
             if (schraubenkopfnummer == 3 & gewindeauswahl == 1)//Senkschraube Regelgewinde
             {
-                schraubenname = "Senkschraube";
-                bezugsnorm = "DIN EN ISO 10642";
+                schraubenname = "Senkschraube ";
+                bezugsnorm = "DIN EN ISO 10642 ";
                 gewindetyp = "M";
                 
             }
 
-            schraubenbezeichnung = schraubenname+" "+bezugsnorm+" - "+gewindetyp+durchmessereingabe+" x "+gesamtlänge+" - "+materialart;
+            schraubenbezeichnung = schraubenname+bezugsnorm+"- "+gewindetyp+durchmessereingabe+" x "+gesamtlänge+" - "+materialart;
             return schraubenbezeichnung;
         }
 
@@ -292,28 +309,35 @@ namespace ConsoleTest
 
             if (schraubenkopfnummer == 1 & gewindeauswahl == 2)//Sechskant Feingewinde
             {
-                schraubenname = "Sechskantschraube";
-                bezugsnorm = "DIN EN ISO 8765";
+                schraubenname = "Sechskantschraube ";
+                bezugsnorm = "DIN EN ISO 8765 ";
                 gewindetyp = "M";
 
             }
 
 
-            if (schraubenkopfnummer == 2 & gewindeauswahl == 2)//Sechskant Feingewinde
+            if (schraubenkopfnummer == 2 & gewindeauswahl == 2)//Zylinder Feingewinde
             {
-                schraubenname = "Zylinderschraube";
-                bezugsnorm = "DIN 34821";
+                schraubenname = "Zylinderschraube ";
+                bezugsnorm = "DIN 34821 ";
                 gewindetyp = "M";
             }
 
-            schraubenbezeichnung = schraubenname + " " + bezugsnorm + " - " + gewindetyp + durchmessereingabe + " x " + steigung + " - " + gesamtlänge + " - " + materialart;
+            if (schraubenkopfnummer == 3 & gewindeauswahl == 2)//Senkschraube Feingewinde
+            {
+                schraubenname = "Senkschraube ";
+                gewindetyp = "M";
+
+            }
+
+            schraubenbezeichnung = schraubenname + bezugsnorm + "- " + gewindetyp + durchmessereingabe + " x " + steigung + " x " + gesamtlänge + " - " + materialart;
             return schraubenbezeichnung;
         }
 
         static public double PreisberechnungMX(double durchmessereingabe, double laengenausgabegewinde, double laengenausgabeschaft, double dichte)
         {
             double preisMX = 0.08; // z.B. 0,08 €/g
-            Console.WriteLine("Steigung des metrischen Regelgewindes:  " + BerechnungSteigung(Tabellen(), durchmessereingabe) + " mm");
+            Console.WriteLine(" Steigung des metrischen Regelgewindes:  " + BerechnungSteigung(Tabellen(), durchmessereingabe) + " mm");
 
             double gewindevolumenMX = Math.Round(GewindevolumenMX(durchmessereingabe, laengenausgabegewinde), 2);
             //Console.WriteLine("Gewindevolumen: " + gewindevolumenMX + " mm^3");
@@ -340,10 +364,10 @@ namespace ConsoleTest
 
         static public double PreisberechnungWW(double durchmessereingabe, double laengenausgabegewinde, double laengenausgabeschaft, double dichte)
         {
-            double preisWW = 0.1; // z.B. 0,1€/g
+            double preisWW = 0.4; // z.B. 0,1€/g
             (double Gangzahl, double WitworthSteigung) = BerechnungWitworthSteigung(WitworthTabelle(), durchmessereingabe);
-            Console.WriteLine("Gangzahl des Whitworth-Gewindes:  " + Gangzahl);
-            Console.WriteLine("Steigung des Whitworth-Gewindes:  " + string.Format("{0:0.00}", WitworthSteigung) + " mm");
+            Console.WriteLine(" Gangzahl des Whitworth-Gewindes:  " + Gangzahl);
+            Console.WriteLine(" Steigung des Whitworth-Gewindes:  " + string.Format("{0:0.00}", WitworthSteigung) + " mm");
 
             double gewindevolumenWW = Math.Round(GewindevolumenWW(durchmessereingabe, laengenausgabegewinde, WitworthSteigung), 2);
             //Console.WriteLine("Gewindevolumen: "+ gewindevolumenWW+" mm^3");
@@ -379,7 +403,7 @@ namespace ConsoleTest
         {
             double preisZylinder = 0.2;
             double kopfdurchmesserZylinder = AusgabeKopfdurchmesser(Schraubenkopfnummer, durchmessereingabe, Tabellen());
-            Console.WriteLine("Kopfdurchmesser: " + kopfdurchmesserZylinder + " mm");
+            Console.WriteLine(" Kopfdurchmesser: " + kopfdurchmesserZylinder + " mm");
 
             double kopfpreisZylinder = Zylindervolumen(kopfdurchmesserZylinder, kopfhöhe)*dichte*preisZylinder;
             return kopfpreisZylinder;
@@ -389,7 +413,7 @@ namespace ConsoleTest
         {
             double preisSenkkopf = 0.6;
             double kopfdurchmesserSenkkopf = AusgabeKopfdurchmesser(Schraubenkopfnummer, durchmessereingabe, Tabellen());
-            Console.WriteLine("Kopfdurchmesser: " + kopfdurchmesserSenkkopf + " mm");
+            Console.WriteLine(" Kopfdurchmesser: " + kopfdurchmesserSenkkopf + " mm");
 
             double kopfpreisSenkkopf = Senkkopfvolumen(kopfdurchmesserSenkkopf, kopfhöhe, durchmessereingabe)*dichte*preisSenkkopf;
 
@@ -399,7 +423,7 @@ namespace ConsoleTest
         static public double PreisberechnungMF(double steigung, double durchmessereingabe, double laengenausgabegewinde, double laengenausgabeschaft, double dichte)
         {
             double preisMF = 0.12; // z.B. 0,12€/g
-            Console.WriteLine("Ausgewählte Steigung: " + steigung + " mm");
+            Console.WriteLine(" Ausgewählte Steigung: " + steigung + " mm");
 
             double gewindevolumenMF = Math.Round(GewindevolumenMF(durchmessereingabe, laengenausgabegewinde, steigung), 2);
             //Console.WriteLine("Gewindevolumen: " + gewindevolumenMF + " mm^3");
@@ -427,7 +451,7 @@ namespace ConsoleTest
         {  
             double flankendurchmessre = durchmessereingabe - (0.6495 * (BerechnungSteigung(Tabellen(), durchmessereingabe)));
             double gewindevolumenMX = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabegewinde;
-            Console.WriteLine("Flankendurchmesser: " + Math.Round(flankendurchmessre, 2) + " mm");
+            //Console.WriteLine("Flankendurchmesser: " + Math.Round(flankendurchmessre, 2) + " mm");
             return gewindevolumenMX;
         }
 
@@ -441,15 +465,17 @@ namespace ConsoleTest
         {            
             double flankendurchmessre = durchmessereingabe - (0.6495 * steigung);
             double gewindevolumenMF = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabegewinde;
-            Console.WriteLine("Flankendurchmesser: " + Math.Round(flankendurchmessre, 2) + " mm");
+            //Console.WriteLine("Flankendurchmesser: " + Math.Round(flankendurchmessre, 2) + " mm");
             return gewindevolumenMF;
         }
 
         static public double GewindevolumenWW(double durchmessereingabe, double laengenausgabegewinde, double WitworthSteigung)
-        {            
-            double flankendurchmessre = durchmessereingabe - (0.64 * WitworthSteigung);
-            double gewindevolumenWW = (Math.PI / 4) * (Math.Pow(flankendurchmessre, 2)) * laengenausgabegewinde;
-            Console.WriteLine("Flankendurchmesser: "+Math.Round(flankendurchmessre,2)+" mm");
+        {
+            string flankendurchmessre = AusgabeWitworthflankendurchmesser(WitworthTabelle(), durchmessereingabe);
+            double flankendurchemesser = Convert.ToDouble(flankendurchmessre);
+            //double flankendurchmessre = durchmessereingabe - (0.64 * WitworthSteigung);
+            double gewindevolumenWW = (Math.PI / 4) * (Math.Pow(flankendurchemesser, 2)) * laengenausgabegewinde;
+            //Console.WriteLine("Flankendurchmesser: "+Math.Round(flankendurchemesser,2)+" mm");
             return gewindevolumenWW;
         }
 
@@ -491,7 +517,8 @@ namespace ConsoleTest
 
         static public double Senkkopfvolumen(double kopfdurchmesserSenkkopf, double kopfhöhe,double durchmessereingabe)
         {
-            double kopfvolumenSenkKopf = (kopfdurchmesserSenkkopf+durchmessereingabe)/2*kopfhöhe;
+            double kopfvolumenSenkKopf = Math.PI * kopfhöhe / 12 * (kopfdurchmesserSenkkopf*kopfdurchmesserSenkkopf+durchmessereingabe*durchmessereingabe+kopfdurchmesserSenkkopf*durchmessereingabe);
+            //double kopfvolumenSenkKopf = (kopfdurchmesserSenkkopf+durchmessereingabe)/2*kopfhöhe;
 
             return kopfvolumenSenkKopf;
         }
@@ -521,9 +548,8 @@ namespace ConsoleTest
             Console.Clear();
             double eingabeLaengeSchaft;
 
-            Console.WriteLine("\n Schaftlänge eingeben: \n");
-            Console.WriteLine("(Gewindefreier Teil)");
-
+            Console.WriteLine("\n Schaftlänge eingeben: (Gewindefreier Teil)\n");
+            
             eingabeLaengeSchaft = Convert.ToDouble(Console.ReadLine());
             
             Console.Clear();
@@ -1107,6 +1133,23 @@ namespace ConsoleTest
             return durchmesserWW;
         }
 
+        static public string AusgabeWitworthflankendurchmesser(string[,] Witworth, double durchmessereingabe)
+        {
+            string durchmesserWW = "0";
+
+            for (int jj = 0; jj <= 7; jj++) // durchsuchen der Tabelle nach dem richtigen Durchmesser
+            {
+                double M = Convert.ToDouble(Witworth[jj, 1]); //umwandeln der Strings in der Tabelle in double
+                if (durchmessereingabe == M) // Vergleich ob in dem Tabellenfeld der gleiche Wert steht wie in der Eingabe
+                {
+                    durchmesserWW = Witworth[jj, 5]; // Wert aus der Tabelle wird Gangzahl übergeben
+                }
+            }
+
+
+            return durchmesserWW;
+        }
+
 
         static public double[,] Tabellen() // Funktion die ein Array zurückgibt
         {
@@ -1330,8 +1373,33 @@ namespace ConsoleTest
             Witworth[5, 5] = "29,43";
             Witworth[6, 5] = "35,39";
             Witworth[7, 5] = "47,19";
+
             return Witworth;
 
         }
+
+       /*static public double[,] WitworthTabelle2() // Funktion die ein Array zurückgibt
+        {
+            // die Werte können nicht mit Formeln errechnet werden, sondern sind auf diese Tabellenwerte genormt
+            // deswegen haben wir die als Tabelle hinterlegt um sie bei den Berechnungen bzw. Ausgaben zu verwenden
+
+            double[,] Witworth2 = new double[8, 0];
+
+            //Flankendurchmesser
+            Witworth2[0, 0] = 5.54;
+            Witworth2[1, 0] = 8.51;
+            Witworth2[2, 0] = 11.35;
+            Witworth2[3, 0] = 17.42;
+            Witworth2[4, 0] = 23.37;
+            Witworth2[5, 0] = 29.43;
+            Witworth2[6, 0] = 35.39;
+            Witworth2[7, 0] = 47.19;
+
+
+
+            return Witworth2;
+
+        }*/
+
     }
 }
