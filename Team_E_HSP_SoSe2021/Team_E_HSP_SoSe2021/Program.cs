@@ -48,7 +48,7 @@ namespace ConsoleTest
                 Console.Clear();
                 double laengenausgabegewinde = GewindeLaenge();
                 Console.Clear();
-                double laengenausgabeschaft = SchaftLaenge();
+                double laengenausgabeschaft = SchaftLaenge(laengenausgabegewinde);
                 Console.Clear();
                 (string schraubenkopfausgabe, int Schraubenkopfnummer) = Schraubenkopf();
                 Console.Clear();
@@ -201,6 +201,13 @@ namespace ConsoleTest
 
         }
         //Hauptprogramm Ende
+
+
+
+
+
+
+
 
         static public string SchraubenbezeichnungMX(int gewindeauswahl, int schraubenkopfnummer,double durchmessereingabe,double gesamtlänge, string materialart)
         {
@@ -462,13 +469,23 @@ namespace ConsoleTest
         }
 
         //Eingabe der Schaftlänge
-        static public double SchaftLaenge()
+        static public double SchaftLaenge(double eingabeLaengegewinde)
         {
             Console.Clear();
             double eingabeLaengeSchaft;
 
-            Console.WriteLine("\n Schaftlänge eingeben: \n");
-            eingabeLaengeSchaft = Convert.ToDouble(Console.ReadLine());
+            do
+            {
+                Console.WriteLine("\n Schaftlänge eingeben: \n");
+                eingabeLaengeSchaft = Convert.ToDouble(Console.ReadLine());
+
+                if (eingabeLaengeSchaft < eingabeLaengegewinde)
+                {
+                    Console.WriteLine("Gewindelänge muss kleiner sein als Schaftlänge");
+                    Console.ReadKey();
+                }
+            }
+            while (eingabeLaengeSchaft < eingabeLaengegewinde);
             Console.Clear();
 
             Console.WriteLine("\n Gewählte Schaftlänge: " + eingabeLaengeSchaft + " mm");
@@ -981,11 +998,16 @@ namespace ConsoleTest
                             Steigung = Tabelle[jj, 5]; // Wert aus der Tabelle wird übergeben
                         }
                     }
-                
+                    MaxBelastung = (Math.Pow((((durchmesserausgabe - 0.6495 * Steigung) + (durchmesserausgabe - 1.2269 * Steigung)) / 2), 2)) * Math.PI * 0.25 * Streckgrenze;
+
             }
 
-            MaxBelastung = (Math.Pow((((durchmesserausgabe - 0.6495 * Steigung) + (durchmesserausgabe - 1.2269 * Steigung)) / 2), 2)) * Math.PI * 0.25 * Streckgrenze;
 
+
+            if(Gewindeart == 2)
+            {
+                MaxBelastung = (Math.Pow((((durchmesserausgabe - 0.6495 * Steigung) + (durchmesserausgabe - 1.2269 * Steigung)) / 2), 2)) * Math.PI * 0.25 * Streckgrenze;
+            }
 
             if (Gewindeart == 3)
             {
@@ -1006,6 +1028,8 @@ namespace ConsoleTest
             return MaxBelastung;
         }
 
+
+      
 
         //Steigung des Witworth Gewindes als Gangzahl und in mm
         static public (double, double) BerechnungWitworthSteigung (string [,] Witworth, double durchmessereingabe)
