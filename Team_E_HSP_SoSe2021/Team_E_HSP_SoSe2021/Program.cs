@@ -1378,28 +1378,6 @@ namespace ConsoleTest
 
         }
 
-       /*static public double[,] WitworthTabelle2() // Funktion die ein Array zurückgibt
-        {
-            // die Werte können nicht mit Formeln errechnet werden, sondern sind auf diese Tabellenwerte genormt
-            // deswegen haben wir die als Tabelle hinterlegt um sie bei den Berechnungen bzw. Ausgaben zu verwenden
-
-            double[,] Witworth2 = new double[8, 0];
-
-            //Flankendurchmesser
-            Witworth2[0, 0] = 5.54;
-            Witworth2[1, 0] = 8.51;
-            Witworth2[2, 0] = 11.35;
-            Witworth2[3, 0] = 17.42;
-            Witworth2[4, 0] = 23.37;
-            Witworth2[5, 0] = 29.43;
-            Witworth2[6, 0] = 35.39;
-            Witworth2[7, 0] = 47.19;
-
-
-
-            return Witworth2;
-
-        }*/
 
     }
 }
